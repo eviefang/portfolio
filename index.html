@@ -152,6 +152,73 @@
   .nav-links a:hover { color: var(--warm-brown); }
   .nav-links a:hover::after { width: 100%; }
 
+  /* ── Side Nav (homepage right column) ── */
+  .side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 1.0s forwards;
+    align-self: center;
+    padding-right: 20px;
+  }
+
+  .side-nav-item {
+    display: block;
+    text-decoration: none;
+    cursor: none;
+    padding: 22px 0;
+    border-top: 1px solid rgba(139,111,78,0.1);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .side-nav-item:last-child {
+    border-bottom: 1px solid rgba(139,111,78,0.1);
+  }
+
+  .side-nav-number {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--warm-brown);
+    display: block;
+    margin-bottom: 6px;
+    transition: color 0.3s ease;
+  }
+
+  .side-nav-label {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    color: var(--dark-text);
+    display: block;
+    margin-bottom: 4px;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .side-nav-en {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light-text);
+    display: block;
+    transition: color 0.3s ease;
+  }
+
+  .side-nav-item:hover .side-nav-label {
+    color: var(--warm-brown);
+    transform: translateX(-6px);
+  }
+  .side-nav-item:hover .side-nav-number {
+    color: var(--dark-text);
+  }
+  .side-nav-item:hover .side-nav-en {
+    color: var(--warm-brown);
+  }
+
   /* ── SECTIONS ── */
   .section {
     min-height: 100vh;
@@ -162,11 +229,21 @@
 
   /* ── HOME ── */
   #home {
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    gap: 40px;
+  }
+
+  .home-left {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
   }
 
   .home-eyebrow {
@@ -401,7 +478,7 @@
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     margin-bottom: 56px;
   }
@@ -426,7 +503,7 @@
     font-weight: 400;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--warm-brown);
     margin-bottom: 12px;
   }
   .card-title {
@@ -655,6 +732,157 @@
     width: 100%;
   }
 
+  /* ── Product Card Enhanced ── */
+  .card-product {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-top {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+  }
+  .card-top > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-desc {
+    flex: 1;
+  }
+  .card-meta {
+    margin-top: auto;
+    padding-top: 14px;
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--light-text);
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+  }
+  .card-meta-divider {
+    margin: 0 6px;
+    opacity: 0.4;
+  }
+  .card-status {
+    display: inline-block;
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .card-status-stopped {
+    background: rgba(154,122,106,0.12);
+    color: var(--light-text);
+  }
+  .card-links button.card-link {
+    font-family: 'DM Sans', sans-serif;
+    background: none;
+    cursor: none;
+  }
+
+  /* ── Project Detail Modal ── */
+  .project-modal {
+    max-width: 720px;
+    height: auto;
+    max-height: 88vh;
+  }
+  .project-detail-body {
+    padding: 36px 40px 48px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .project-detail-body::-webkit-scrollbar { width: 4px; }
+  .project-detail-body::-webkit-scrollbar-thumb { background: rgba(139,111,78,0.15); border-radius: 2px; }
+
+  .pd-section {
+    margin-bottom: 36px;
+  }
+  .pd-section:last-child {
+    margin-bottom: 0;
+  }
+  .pd-section-label {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(195,129,113,0.15);
+  }
+  .pd-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--mid-text);
+    line-height: 1.85;
+  }
+  .pd-decision {
+    margin-bottom: 20px;
+  }
+  .pd-decision:last-child {
+    margin-bottom: 0;
+  }
+  .pd-decision-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--dark-text);
+    margin-bottom: 6px;
+  }
+  .pd-decision-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--mid-text);
+    line-height: 1.75;
+    padding-left: 14px;
+    border-left: 2px solid var(--soft-pink);
+  }
+  .pd-list {
+    list-style: none;
+    padding: 0;
+  }
+  .pd-list li {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--mid-text);
+    line-height: 1.75;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(139,111,78,0.06);
+    position: relative;
+    padding-left: 16px;
+  }
+  .pd-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 4px;
+    height: 4px;
+    background: var(--warm-brown);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .pd-list li:last-child {
+    border-bottom: none;
+  }
+  .pd-value {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--mid-text);
+    line-height: 1.85;
+    padding: 16px 20px;
+    background: rgba(195,129,113,0.04);
+    border-radius: 8px;
+    border-left: 3px solid var(--warm-brown);
+  }
+
   /* ── Timeline hover expand (replaces click) ── */
   .timeline-item {
     position: relative;
@@ -704,7 +932,7 @@
   <!-- NAV -->
   <nav>
     <a class="nav-logo" href="#" onclick="showSection('home')">Evie</a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinksTop">
       <li><a href="#" onclick="showSection('experience')">经历</a></li>
       <li><a href="#" onclick="showSection('work')">作品集</a></li>
       <li><a href="#" onclick="showSection('about')">关于我</a></li>
@@ -713,10 +941,31 @@
 
   <!-- HOME -->
   <section class="section active" id="home">
-    <div class="home-eyebrow">Product · AI · Human</div>
-    <h1 class="home-title" id="homeTitle"><span class="title-char">方</span><span class="title-char">竹</span><span class="title-char"><em>伊</em></span></h1>
-    <p class="home-subtitle">留学背景 · 技术敏感 · 从体验到产品</p>
-    <p class="home-tagline">用AI解决真实问题，从痛点到可以体验的东西。</p>
+    <div class="home-left">
+      <div class="home-eyebrow">Product · AI · Human</div>
+      <h1 class="home-title" id="homeTitle"><span class="title-char">方</span><span class="title-char">竹</span><span class="title-char"><em>伊</em></span></h1>
+      <p class="home-subtitle">留学背景 · 技术敏感 · 从体验到产品</p>
+      <p class="home-tagline">用AI解决真实问题，从痛点到可以体验的东西。</p>
+    </div>
+
+    <div class="side-nav" id="sideNav">
+      <a class="side-nav-item" href="#" onclick="showSection('experience')">
+        <span class="side-nav-number">01</span>
+        <span class="side-nav-label">经历</span>
+        <span class="side-nav-en">Timeline</span>
+      </a>
+      <a class="side-nav-item" href="#" onclick="showSection('work')">
+        <span class="side-nav-number">02</span>
+        <span class="side-nav-label">作品集</span>
+        <span class="side-nav-en">Portfolio</span>
+      </a>
+      <a class="side-nav-item" href="#" onclick="showSection('about')">
+        <span class="side-nav-number">03</span>
+        <span class="side-nav-label">关于我</span>
+        <span class="side-nav-en">About</span>
+      </a>
+    </div>
+
     <div class="home-footer" id="homeFooter">
       <div class="home-status">
         <span class="status-dot"></span>
@@ -756,31 +1005,10 @@
       <div class="timeline">
         <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
-          <div class="timeline-year">2019</div>
-          <div class="timeline-role">数据科学与大数据技术</div>
-          <div class="timeline-org">北京体育大学</div>
-          <div class="timeline-detail"><p>本科就读于北京体育大学，专业为数据科学与大数据技术，建立了扎实的技术基础与数据思维。</p></div>
-        </div>
-        <div class="timeline-item fade-in" >
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">2023 — 2024</div>
-          <div class="timeline-role">备考与申请</div>
-          <div class="timeline-org">雅思 7.5 · 独立申请帝国理工</div>
-          <div class="timeline-detail"><p>自主完成全部申请材料准备，雅思取得 7.5 分，成功申请至帝国理工学院。</p></div>
-        </div>
-        <div class="timeline-item fade-in" >
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">2024</div>
-          <div class="timeline-role">环境数据科学与机器学习，Merit 优等</div>
-          <div class="timeline-org">Imperial College London</div>
-          <div class="timeline-detail"><p>以 Merit 优等成绩完成帝国理工学院环境数据科学与机器学习硕士项目，深化了对 AI/ML 在真实场景中应用的理解。</p></div>
-        </div>
-        <div class="timeline-item fade-in" >
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">2025.01</div>
-          <div class="timeline-role">产品设计实习生</div>
-          <div class="timeline-org">Recraft AI · 伦敦</div>
-          <div class="timeline-detail"><p>在 AI 设计工具 Recraft AI 担任产品设计实习生，参与产品功能迭代与用户体验优化，积累了 AI 工具类产品的一线经验。</p></div>
+          <div class="timeline-year">2025.12</div>
+          <div class="timeline-role">硕士毕业 · 求职中</div>
+          <div class="timeline-org">寻找 AI 产品方向全职机会</div>
+          <div class="timeline-detail"><p>完成硕士学业，目前积极寻找 AI 产品经理方向的全职机会，欢迎交流。</p></div>
         </div>
         <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
@@ -791,10 +1019,31 @@
         </div>
         <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
-          <div class="timeline-year">2025.12</div>
-          <div class="timeline-role">硕士毕业 · 求职中</div>
-          <div class="timeline-org">寻找 AI 产品方向全职机会</div>
-          <div class="timeline-detail"><p>完成硕士学业，目前积极寻找 AI 产品经理方向的全职机会，欢迎交流。</p></div>
+          <div class="timeline-year">2025.01</div>
+          <div class="timeline-role">产品设计实习生</div>
+          <div class="timeline-org">Recraft AI · 伦敦</div>
+          <div class="timeline-detail"><p>在 AI 设计工具 Recraft AI 担任产品设计实习生，参与产品功能迭代与用户体验优化，积累了 AI 工具类产品的一线经验。</p></div>
+        </div>
+        <div class="timeline-item fade-in" >
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2024</div>
+          <div class="timeline-role">环境数据科学与机器学习，Merit 优等</div>
+          <div class="timeline-org">Imperial College London</div>
+          <div class="timeline-detail"><p>以 Merit 优等成绩完成帝国理工学院环境数据科学与机器学习硕士项目，深化了对 AI/ML 在真实场景中应用的理解。</p></div>
+        </div>
+        <div class="timeline-item fade-in" >
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2023 — 2024</div>
+          <div class="timeline-role">备考与申请</div>
+          <div class="timeline-org">雅思 7.5 · 独立申请帝国理工</div>
+          <div class="timeline-detail"><p>自主完成全部申请材料准备，雅思取得 7.5 分，成功申请至帝国理工学院。</p></div>
+        </div>
+        <div class="timeline-item fade-in" >
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2019</div>
+          <div class="timeline-role">数据科学与大数据技术</div>
+          <div class="timeline-org">北京体育大学</div>
+          <div class="timeline-detail"><p>本科就读于北京体育大学，专业为数据科学与大数据技术，建立了扎实的技术基础与数据思维。</p></div>
         </div>
       </div>
     </div>
@@ -810,15 +1059,41 @@
 
       <div class="work-section-title fade-in">个人产品</div>
       <div class="cards-grid">
-        <div class="card fade-in">
-          <div class="card-tag">工具 · NLP</div>
-          <div class="card-title">LyricSync</div>
-          <div class="card-desc">双语歌词字幕打轴工具。支持中英文歌词自动对齐与时间轴生成，解决手动打轴效率低的痛点。</div>
+        <div class="card card-product fade-in">
+          <div class="card-top">
+            <div>
+              <div class="card-tag">工具 · NLP · AI</div>
+              <div class="card-title">LyricSync</div>
+              <div class="card-desc">双语歌词字幕打轴工具。将「制作外语歌词视频」的字幕处理从多工具、多步骤、有付费门槛，压缩成一个页面内的完整闭环。</div>
+              <div class="card-meta">
+                <span class="card-meta-item">2026.03</span>
+                <span class="card-meta-divider">·</span>
+                <span class="card-meta-item">HTML / CSS / JS · Vercel Serverless · 智谱 GLM-4-Flash</span>
+              </div>
+            </div>
+          </div>
           <div class="card-links">
-            <a class="card-link" href="https://github.com/" target="_blank">GitHub</a>
-            <a class="card-link" href="#" target="_blank">在线体验</a>
-            <a class="card-link" href="#" target="_blank">案例文档</a>
-            <a class="card-link" href="#" target="_blank">示例素材</a>
+            <a class="card-link" href="https://lyricsync-theta.vercel.app" target="_blank">在线体验 ↗</a>
+            <button class="card-link" onclick="openProjectDetail('lyricsync')">产品详情</button>
+          </div>
+        </div>
+
+        <div class="card card-product fade-in">
+          <div class="card-top">
+            <div>
+              <div class="card-tag">知识管理 · 语音 · AI <span class="card-status card-status-stopped">已停止</span></div>
+              <div class="card-title">ThinkLog</div>
+              <div class="card-desc">语音驱动的个人知识沉淀工具。通过语音与 AI 对话，自动提炼为结构化知识卡片。完成原型验证后主动否决——展示产品判断而非技术能力。</div>
+              <div class="card-meta">
+                <span class="card-meta-item">2025.12</span>
+                <span class="card-meta-divider">·</span>
+                <span class="card-meta-item">React · FastAPI · Whisper · Claude · Supabase</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-links">
+            <a class="card-link" href="https://thinklog-569014758826.us-west1.run.app" target="_blank">原型体验 ↗</a>
+            <button class="card-link" onclick="openProjectDetail('thinklog')">产品详情</button>
           </div>
         </div>
       </div>
@@ -885,6 +1160,23 @@
   </div>
 </div>
 
+<!-- Project Detail Modal -->
+<div class="resume-overlay" id="projectOverlay" onclick="closeProjectDetail(event)">
+  <div class="resume-modal project-modal">
+    <div class="resume-modal-header">
+      <span class="resume-modal-title" id="projectModalTitle">产品详情</span>
+      <div class="resume-modal-actions">
+        <button class="resume-close" onclick="closeProjectDetail()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="project-detail-body" id="projectDetailBody"></div>
+  </div>
+</div>
+
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── Cursor ──
   const cursor = document.getElementById('cursor');
@@ -907,7 +1199,7 @@
   }
   animateRing();
 
-  document.querySelectorAll('a, button, .timeline-item, .card, .analysis-item, .home-title, .resume-btn, .resume-close, .resume-download').forEach(el => {
+  document.querySelectorAll('a, button, .timeline-item, .card, .analysis-item, .home-title, .resume-btn, .resume-close, .resume-download, .side-nav-item').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.width = '14px';
       cursor.style.height = '14px';
@@ -927,12 +1219,15 @@
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     document.getElementById('homeFooter') && (document.getElementById('homeFooter').style.display = id === 'home' ? 'flex' : 'none');
+    // Top links hidden on home, visible on other pages
+    document.getElementById('navLinksTop').style.display = id === 'home' ? 'none' : 'flex';
     // trigger fade-in
     setTimeout(() => triggerFadeIn(), 50);
   }
 
-  // Home footer visibility
+  // Initial state: top links hidden on homepage
   document.getElementById('homeFooter').style.display = 'flex';
+  document.getElementById('navLinksTop').style.display = 'none';
 
   // ── Timeline toggle (now hover-based via CSS, no JS needed) ──
 
@@ -953,8 +1248,134 @@
       document.getElementById('resumeIframe').src = 'about:blank';
     }, 350);
   }
+
+  // ── Project Detail Modal ──
+  const projectData = {
+    lyricsync: {
+      title: 'LyricSync · 产品详情',
+      html: `
+        <div class="pd-section">
+          <div class="pd-section-label">背景</div>
+          <div class="pd-text">
+            我制作外语翻唱视频，需要给视频加双语字幕。现有工具都无法顺畅完成这件事。
+          </div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">痛点</div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">剪映：付费墙 + 翻译质量差</div>
+            <div class="pd-decision-desc">双语字幕需要 SVIP，自动翻译逐字直译缺乏歌词韵味。</div>
+          </div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">自有译文无法落地</div>
+            <div class="pd-decision-desc">即使有满意的翻译，也要先找工具转成字幕文件格式，导入后还和自动识别的原文时间戳对不准，前后功夫全白费。</div>
+          </div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">Whisper 对快歌无效</div>
+            <div class="pd-decision-desc">rap 和快歌的时间戳断句完全不准，多语言混排（英/韩/泰）识别率低。</div>
+          </div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">核心洞察</div>
+          <div class="pd-value" style="font-style:normal;">用户往往已经有了满意的翻译，缺的只是「把双语歌词精准贴上时间轴」这一步。</div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">关键产品决策</div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">决策一：放弃自动时间戳，改用手动打轴</div>
+            <div class="pd-decision-desc">实测发现 Whisper 对 rap 和快歌断句完全不可用。转向手动打轴后，用户播放音频、按键标记每句开始时间，一遍听完即可完成。实际体验反而比自动识别更顺手——可控性高，短视频场景效率更优。</div>
+          </div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">决策二：支持双语交替格式自动识别拆分</div>
+            <div class="pd-decision-desc">目标用户最常见的操作是从音乐 App 直接复制歌词，格式通常是「一句外语 + 一句中文」交替排列。粘入后自动检测并提示拆分，无需手动整理。</div>
+          </div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">决策三：AI 翻译作为辅助而非主流程</div>
+            <div class="pd-decision-desc">集成 AI 翻译和行数自动对齐，但定位是辅助工具。主要用户路径是：自带满意译文 → 拆分对齐 → 打轴导出。AI 翻译是没有译文时的备选方案，API 调用通过 Serverless Function 保护密钥安全。</div>
+          </div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">迭代记录</div>
+          <ul class="pd-list">
+            <li>空格/回车键与浏览器原生音频控件冲突，改用 J 键打点，彻底绕开焦点问题</li>
+            <li>原生 &lt;audio&gt; 元素键盘事件被拦截，替换为自定义播放器完全掌控键盘事件</li>
+            <li>「对齐行数」功能触发时机不明确，改为行数不一致时自动出现，行数一致后消失</li>
+            <li>变速功能藏在播放器三点菜单内，改为直接显示 0.5× / 0.75× / 1× 三个按钮</li>
+            <li>双语歌词需手动拆分体验差，自动检测交替格式，一键拆分到两列</li>
+          </ul>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">产品价值</div>
+          <div class="pd-value">将「制作外语歌词视频」的字幕处理流程从多步骤、多工具、有付费门槛，压缩成一个页面内的完整闭环。工具本身即作为目标用户日常使用，验证了产品对真实需求的拟合。</div>
+        </div>
+      `
+    },
+    thinklog: {
+      title: 'ThinkLog · 产品详情',
+      html: `
+        <div class="pd-section">
+          <div class="pd-section-label">产品定义</div>
+          <div class="pd-text">
+            ThinkLog 是一个语音驱动的个人知识沉淀工具。用户通过语音与 AI 自由对话 5-10 分钟，结束后 AI 自动将对话提炼为结构化知识卡片，存入个人知识库，支持分类浏览和关键词检索。
+          </div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">为什么做</div>
+          <div class="pd-text">
+            与 AI 对话产生的高质量思考，随着聊天窗口关闭而消失，无法复用。我想让「想清楚一件事」这个过程本身变成可沉淀、可检索的资产。
+          </div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">做到哪里了</div>
+          <div class="pd-text">
+            完成了完整 PRD（技术栈选型、API 设计、数据库结构、页面交互设计），并构建了前端交互原型，核心页面流程和动效已实现（对话为模拟数据）。后端大模型 API 接入和知识卡片提炼功能已验证跑通，但未集成到前端展示。
+          </div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">为什么停掉</div>
+          <div class="pd-text" style="margin-bottom:16px;">
+            经过原型验证后，我判断这个产品的 ROI 不成立：
+          </div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">对我自己有更好的替代方案</div>
+            <div class="pd-decision-desc">一是用 OpenClaw 养一只专属头脑风暴助手，个人定制化是它最大的优势，且开源免费；二是在 Claude 里写一个针对头脑风暴场景的 skill，链接 GitHub 知识库，对话结束后自动写入 repo——无需额外 App，无缝嵌入现有工作流，不需要培养新的使用习惯。</div>
+          </div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">对普通用户缺乏使用动机</div>
+            <div class="pd-decision-desc">非技术用户没有高频的 AI 头脑风暴需求，不会专门下载一个 App 来做这件事。产品还需要接入大模型、用户还要付 API 费用，使用门槛高但价值感知低。</div>
+          </div>
+          <div class="pd-decision">
+            <div class="pd-decision-title">核心体验无法自建达标</div>
+            <div class="pd-decision-desc">语音实时对话的体验只在 Gemini、GPT、豆包这类大模型原生产品中足够丝滑，第三方产品自建语音对话链路（录音 → 转写 → 生成 → TTS）延迟和体验都无法与之匹敌，而这恰恰是 ThinkLog 最核心的交互。</div>
+          </div>
+        </div>
+        <div class="pd-section">
+          <div class="pd-section-label">复盘</div>
+          <div class="pd-value" style="font-style:normal;">不是所有做得出来的产品都值得做。技术上完全可以实现，但当更轻量的替代方案已经存在、目标用户群不明确、核心体验无法自建达标时，及时止损是更好的产品判断。</div>
+        </div>
+      `
+    }
+  };
+
+  function openProjectDetail(id) {
+    const data = projectData[id];
+    if (!data) return;
+    document.getElementById('projectModalTitle').textContent = data.title;
+    document.getElementById('projectDetailBody').innerHTML = data.html;
+    document.getElementById('projectOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeProjectDetail(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('projectOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeResume();
+    if (e.key === 'Escape') {
+      closeResume();
+      closeProjectDetail();
+    }
   });
 
   // ── Fade-in on scroll ──
