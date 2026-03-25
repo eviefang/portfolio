@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>方竹伊 · Evie Fang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400&family=EB+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root {
+    --cream: #faf9f7;
+    --warm-brown: #b07040;
+    --soft-pink: #e8d8c0;
+    --fog-blue: #8aa4b0;
+    --gray-purple: #7a96a4;
+    --dark-text: #1e1e1e;
+    --mid-text: #4a4640;
+    --light-text: #7a7068;
+    --accent: #c09060;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #faf9f7;
+    color: var(--dark-text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── Custom Cursor ── */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--warm-brown);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(139,111,78,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.12s ease, width 0.3s ease, height 0.3s ease, opacity 0.2s ease;
+  }
+  body:hover .cursor { opacity: 1; }
+  a:hover ~ .cursor, button:hover ~ .cursor { width: 14px; height: 14px; }
+
+  /* ── Three.js Canvas Background ── */
+  #ink-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* grain overlay */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.03;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* ── Layout ── */
+  #app {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    color: var(--dark-text);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    cursor: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid-text);
+    text-decoration: none;
+    cursor: none;
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--warm-brown);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--warm-brown); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ── SECTIONS ── */
+  .section {
+    min-height: 100vh;
+    padding: 120px 48px 80px;
+    display: none;
+  }
+  .section.active { display: flex; }
+
+  /* Frosted overlay for subpages — covers the animated canvas */
+  .section:not(#home)::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(248, 246, 242, 0.82);
+    backdrop-filter: blur(28px) saturate(1.1);
+    -webkit-backdrop-filter: blur(28px) saturate(1.1);
+  }
+
+  /* ── HOME ── */
+  #home {
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .home-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--light-text);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .home-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--dark-text);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.4s forwards;
+  }
+
+  .home-title em {
+    font-style: italic;
+  }
+
+  .home-subtitle {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 300;
+    color: var(--mid-text);
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.6s forwards;
+  }
+
+  .home-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 200;
+    color: var(--light-text);
+    max-width: 480px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.8s forwards;
+  }
+
+  .home-footer {
+    position: fixed;
+    bottom: 40px;
+    left: 48px; right: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.1s forwards;
+  }
+
+  .home-status {
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--light-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+    background: #a8c0a0;
+    border-radius: 50%;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .home-contact {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .home-contact a {
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--light-text);
+    text-decoration: none;
+    cursor: none;
+    transition: color 0.2s;
+  }
+  .home-contact a:hover { color: var(--warm-brown); }
+
+  .icon-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--light-text);
+    text-decoration: none;
+    cursor: none;
+    transition: color 0.2s;
+  }
+  .icon-link:hover { color: var(--warm-brown); }
+  .icon-link svg { width: 16px; height: 16px; }
+
+  /* ── EXPERIENCE ── */
+  #experience {
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .section-header {
+    margin-bottom: 64px;
+  }
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--light-text);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 2.8rem;
+    color: var(--dark-text);
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--accent), var(--fog-blue), var(--gray-purple), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 48px;
+    cursor: none;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -36px;
+    top: 6px;
+    width: 8px; height: 8px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    background: var(--cream);
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .timeline-item:hover .timeline-dot {
+    background: var(--warm-brown);
+    border-color: var(--warm-brown);
+    transform: scale(1.4);
+  }
+  .timeline-item.expanded .timeline-dot {
+    background: var(--warm-brown);
+    border-color: var(--warm-brown);
+  }
+
+  .timeline-year {
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--light-text);
+    margin-bottom: 6px;
+  }
+
+  .timeline-role {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--dark-text);
+    margin-bottom: 4px;
+    transition: color 0.2s;
+  }
+  .timeline-item:hover .timeline-role { color: var(--warm-brown); }
+
+  .timeline-org {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--mid-text);
+    letter-spacing: 0.04em;
+  }
+
+  .timeline-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .timeline-item.expanded .timeline-detail {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 12px;
+  }
+  .timeline-detail p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--mid-text);
+    line-height: 1.75;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.4);
+    border-left: 2px solid var(--soft-pink);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* ── WORK ── */
+  #work {
+    flex-direction: column;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .work-section-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--light-text);
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(139,111,78,0.15);
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 12px;
+    padding: 28px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s;
+    cursor: none;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(139,111,78,0.12);
+    background: rgba(255,255,255,0.6);
+  }
+
+  .card-tag {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.3rem;
+    color: var(--dark-text);
+    margin-bottom: 10px;
+  }
+  .card-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--mid-text);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .card-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .card-link {
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warm-brown);
+    text-decoration: none;
+    cursor: none;
+    border: 1px solid rgba(139,111,78,0.3);
+    padding: 5px 12px;
+    border-radius: 20px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .card-link:hover {
+    background: var(--warm-brown);
+    color: #fff;
+    border-color: var(--warm-brown);
+  }
+
+  .analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .analysis-item {
+    padding: 18px 20px;
+    background: rgba(255,255,255,0.3);
+    border: 1px solid rgba(184,196,204,0.4);
+    border-radius: 8px;
+    cursor: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .analysis-item:hover {
+    background: rgba(255,255,255,0.55);
+    border-color: rgba(184,196,204,0.7);
+  }
+  .analysis-item a {
+    text-decoration: none;
+    cursor: none;
+  }
+  .analysis-topic {
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-purple);
+    margin-bottom: 6px;
+  }
+  .analysis-name {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    color: var(--dark-text);
+    transition: color 0.2s;
+  }
+  .analysis-item:hover .analysis-name { color: var(--warm-brown); }
+
+  /* ── ABOUT ── */
+  #about {
+    flex-direction: column;
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
+  }
+  .about-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--mid-text);
+    margin-top: 32px;
+  }
+  .about-placeholder {
+    margin-top: 48px;
+    padding: 24px;
+    border: 1px dashed rgba(139,111,78,0.2);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--light-text);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Three.js Ink Background -->
+<canvas id="ink-canvas"></canvas>
+<div class="grain"></div>
+
+<div id="app">
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#" onclick="showSection('home')">Evie</a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showSection('experience')">经历</a></li>
+      <li><a href="#" onclick="showSection('work')">作品集</a></li>
+      <li><a href="#" onclick="showSection('about')">关于我</a></li>
+    </ul>
+  </nav>
+
+  <!-- HOME -->
+  <section class="section active" id="home">
+    <div class="home-eyebrow">Product · AI · Human</div>
+    <h1 class="home-title">方竹<em>伊</em></h1>
+    <p class="home-subtitle">留学背景 · 技术敏感 · 从体验到产品</p>
+    <p class="home-tagline">用AI解决真实问题，从痛点到可以体验的东西。</p>
+    <div class="home-footer" id="homeFooter">
+      <div class="home-status">
+        <span class="status-dot"></span>
+        正在寻找 AI 产品方向的全职机会
+      </div>
+      <div class="home-contact">
+        <a href="mailto:zhuyifang77@gmail.com">zhuyifang77@gmail.com</a>
+        <a class="icon-link" href="https://github.com/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience">
+    <div>
+      <div class="section-header fade-in">
+        <div class="section-label">Timeline</div>
+        <h2 class="section-title">经历</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2019</div>
+          <div class="timeline-role">数据科学与大数据技术</div>
+          <div class="timeline-org">北京体育大学</div>
+          <div class="timeline-detail"><p>本科就读于北京体育大学，专业为数据科学与大数据技术，建立了扎实的技术基础与数据思维。</p></div>
+        </div>
+        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2023 — 2024</div>
+          <div class="timeline-role">备考与申请</div>
+          <div class="timeline-org">雅思 7.5 · 独立申请帝国理工</div>
+          <div class="timeline-detail"><p>自主完成全部申请材料准备，雅思取得 7.5 分，成功申请至帝国理工学院。</p></div>
+        </div>
+        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2024</div>
+          <div class="timeline-role">环境数据科学与机器学习，Merit 优等</div>
+          <div class="timeline-org">Imperial College London</div>
+          <div class="timeline-detail"><p>以 Merit 优等成绩完成帝国理工学院环境数据科学与机器学习硕士项目，深化了对 AI/ML 在真实场景中应用的理解。</p></div>
+        </div>
+        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2025.01</div>
+          <div class="timeline-role">产品设计实习生</div>
+          <div class="timeline-org">Recraft AI · 伦敦</div>
+          <div class="timeline-detail"><p>在 AI 设计工具 Recraft AI 担任产品设计实习生，参与产品功能迭代与用户体验优化，积累了 AI 工具类产品的一线经验。</p></div>
+        </div>
+        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2025.07</div>
+          <div class="timeline-role">技术产品实习生</div>
+          <div class="timeline-org">阿里巴巴橙狮体育 · 杭州</div>
+          <div class="timeline-detail"><p>加入阿里巴巴橙狮体育担任技术产品实习生，参与体育科技方向的产品规划与落地工作。</p></div>
+        </div>
+        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+          <div class="timeline-dot"></div>
+          <div class="timeline-year">2025.12</div>
+          <div class="timeline-role">硕士毕业 · 求职中</div>
+          <div class="timeline-org">寻找 AI 产品方向全职机会</div>
+          <div class="timeline-detail"><p>完成硕士学业，目前积极寻找 AI 产品经理方向的全职机会，欢迎交流。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <div style="width:100%">
+      <div class="section-header fade-in">
+        <div class="section-label">Portfolio</div>
+        <h2 class="section-title">作品集</h2>
+      </div>
+
+      <div class="work-section-title fade-in">个人产品</div>
+      <div class="cards-grid">
+        <div class="card fade-in">
+          <div class="card-tag">工具 · NLP</div>
+          <div class="card-title">LyricSync</div>
+          <div class="card-desc">双语歌词字幕打轴工具。支持中英文歌词自动对齐与时间轴生成，解决手动打轴效率低的痛点。</div>
+          <div class="card-links">
+            <a class="card-link" href="https://github.com/" target="_blank">GitHub</a>
+            <a class="card-link" href="#" target="_blank">在线体验</a>
+            <a class="card-link" href="#" target="_blank">案例文档</a>
+            <a class="card-link" href="#" target="_blank">示例素材</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-section-title fade-in">产品分析</div>
+      <div class="analysis-grid">
+        <div class="analysis-item fade-in">
+          <div class="analysis-topic">AI 社交</div>
+          <a href="#" target="_blank">
+            <div class="analysis-name">Elys · Second Me · Tolan</div>
+          </a>
+        </div>
+        <div class="analysis-item fade-in">
+          <div class="analysis-topic">AI 工具</div>
+          <a href="#" target="_blank">
+            <div class="analysis-name">产品分析合集</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div>
+      <div class="section-header fade-in">
+        <div class="section-label">About</div>
+        <h2 class="section-title">关于我</h2>
+      </div>
+      <p class="about-text fade-in">
+        我叫方竹伊，有国内数据科学本科与帝国理工硕士背景，<br>
+        对 AI 产品有持续的关注与动手习惯——<br>
+        我喜欢把想法做成可以体验的东西。
+      </p>
+      <div class="about-placeholder fade-in">
+        兴趣爱好板块 · 即将上线
+      </div>
+    </div>
+  </section>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ── Cursor ──
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = window.innerWidth/2, my = window.innerHeight/2;
+  let rx = mx, ry = my;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .timeline-item, .card, .analysis-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '14px';
+      cursor.style.height = '14px';
+      ring.style.width = '52px';
+      ring.style.height = '52px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '8px';
+      cursor.style.height = '8px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // ── Navigation ──
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('homeFooter') && (document.getElementById('homeFooter').style.display = id === 'home' ? 'flex' : 'none');
+    // trigger fade-in
+    setTimeout(() => triggerFadeIn(), 50);
+  }
+
+  // Home footer visibility
+  document.getElementById('homeFooter').style.display = 'flex';
+
+  // ── Timeline toggle ──
+  function toggleTimeline(el) {
+    const isExpanded = el.classList.contains('expanded');
+    document.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('expanded'));
+    if (!isExpanded) el.classList.add('expanded');
+  }
+
+  // ── Fade-in on scroll ──
+  function triggerFadeIn() {
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 60) {
+        el.classList.add('visible');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', triggerFadeIn);
+  document.addEventListener('DOMContentLoaded', triggerFadeIn);
+</script>
+
+<script>
+// ── Three.js Ink Flow Background ──
+(function() {
+  const canvas = document.getElementById('ink-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+  // 3 blobs — each with its own elliptical orbit path for fluid, continuous motion
+  const INK_COUNT = 3;
+  const inkColors = [
+    [0.93, 0.76, 0.55], // warm peach-apricot  #edC28c
+    [0.88, 0.68, 0.46], // deeper amber-orange  #e0ad75
+    [0.95, 0.82, 0.64], // pale cream-orange    #f2d1a3
+  ];
+
+  // Each blob follows a slow elliptical lissajous path — feels organic, never stops
+  const blobs = [
+    {
+      // top-left area, large
+      cx: 0.22, cy: 0.72,   // orbit center
+      rx: 0.14, ry: 0.10,   // orbit radius x/y
+      freq: 0.09, phase: 0.0,
+      x: 0.22, y: 0.72,
+      color: inkColors[0],
+      size: 0.52,
+    },
+    {
+      // right-center area
+      cx: 0.80, cy: 0.48,
+      rx: 0.10, ry: 0.16,
+      freq: 0.07, phase: 2.1,
+      x: 0.80, y: 0.48,
+      color: inkColors[1],
+      size: 0.46,
+    },
+    {
+      // bottom-left area
+      cx: 0.28, cy: 0.20,
+      rx: 0.12, ry: 0.08,
+      freq: 0.11, phase: 4.2,
+      x: 0.28, y: 0.20,
+      color: inkColors[2],
+      size: 0.40,
+    },
+  ];
+
+  const vertSrc = `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = vec4(position, 1.0);
+    }
+  `;
+
+  const fragSrc = `
+    precision highp float;
+    varying vec2 vUv;
+    uniform float uTime;
+    uniform vec2 uRes;
+
+    uniform vec4 uBlobs[3];
+    uniform vec3 uColors[3];
+
+    float hash(vec2 p) {
+      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+    }
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      vec2 u = f * f * (3.0 - 2.0 * f);
+      return mix(
+        mix(hash(i), hash(i + vec2(1,0)), u.x),
+        mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), u.x),
+        u.y
+      );
+    }
+    float fbm(vec2 p) {
+      float v = 0.0, a = 0.5;
+      for (int i = 0; i < 4; i++) {
+        v += a * noise(p);
+        p *= 2.1; a *= 0.5;
+      }
+      return v;
+    }
+
+    void main() {
+      vec2 aspect = vec2(uRes.x / uRes.y, 1.0);
+      vec2 uv = vUv;
+
+      vec3 base = vec3(0.990, 0.986, 0.980); // near-pure white #fcfbfa
+
+      vec3 col = base;
+
+      for (int i = 0; i < 3; i++) {
+        vec2 bPos = uBlobs[i].xy;
+        float bSize = uBlobs[i].z;
+        float bPhase = uBlobs[i].w;
+
+        vec2 distUv = uv * vec2(aspect.x, 1.0);
+        vec2 bPosAsp = bPos * vec2(aspect.x, 1.0);
+
+        // Organic edge warp tied to time — makes the blob shape slowly morph
+        float noiseAmt = fbm(distUv * 1.4 + uTime * 0.02 + bPhase) * 0.10;
+        vec2 dir = normalize(distUv - bPosAsp + 0.001);
+        vec2 distorted = distUv + noiseAmt * dir;
+
+        float dist = length(distorted - bPosAsp);
+
+        // Slow breathing
+        float breathing = 1.0 + 0.04 * sin(uTime * 0.38 + bPhase);
+        float sz = bSize * breathing;
+
+        // Pure wide gaussian — no hard core, all dreamy soft wash
+        // Inner slightly tighter for center warmth, outer for wide spread
+        float inner = exp(-dist * dist / (sz * sz * 0.55));
+        float outer = exp(-dist * dist / (sz * sz * 2.8));
+
+        // Inner at 55% max, outer ambient at 20% — never harsh
+        float strength = inner * 0.52 + outer * 0.20;
+        strength = clamp(strength, 0.0, 0.68);
+
+        col = mix(col, uColors[i], strength);
+      }
+
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  const uniforms = {
+    uTime:   { value: 0 },
+    uRes:    { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+    uBlobs:  { value: blobs.map(b => new THREE.Vector4(b.x, b.y, b.size, b.phase || 0)) },
+    uColors: { value: blobs.map(b => new THREE.Vector3(...b.color)) },
+  };
+
+  const mat  = new THREE.ShaderMaterial({ vertexShader: vertSrc, fragmentShader: fragSrc, uniforms });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
+  scene.add(mesh);
+
+  function animate(t) {
+    requestAnimationFrame(animate);
+    const time = t * 0.001;
+    uniforms.uTime.value = time;
+
+    // Each blob smoothly orbits its center — continuous, flowing, never jittery
+    blobs.forEach((b, i) => {
+      const angle = time * b.freq + b.phase;
+      // Lissajous-style: x and y at slightly different frequencies for organic path
+      b.x = b.cx + Math.cos(angle) * b.rx;
+      b.y = b.cy + Math.sin(angle * 1.3 + b.phase) * b.ry;
+      uniforms.uBlobs.value[i].set(b.x, b.y, b.size, angle);
+    });
+
+    renderer.render(scene, camera);
+  }
+  requestAnimationFrame(animate);
+
+  window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    uniforms.uRes.value.set(window.innerWidth, window.innerHeight);
+  });
+})();
+</script>
+</body>
+</html>
