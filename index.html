@@ -544,42 +544,131 @@
     border-color: var(--warm-brown);
   }
 
-  .analysis-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+  /* ── Analysis List (expandable articles) ── */
+  .analysis-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
-  .analysis-item {
-    padding: 18px 20px;
+  .analysis-entry {
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 10px;
     background: rgba(255,255,255,0.3);
-    border: 1px solid rgba(184,196,204,0.4);
-    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    margin-bottom: 12px;
+    transition: background 0.2s, box-shadow 0.25s;
     cursor: none;
-    transition: background 0.2s, border-color 0.2s;
+    overflow: hidden;
   }
-  .analysis-item:hover {
-    background: rgba(255,255,255,0.55);
-    border-color: rgba(184,196,204,0.7);
+  .analysis-entry:hover {
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 8px 30px rgba(139,111,78,0.08);
   }
-  .analysis-item a {
-    text-decoration: none;
-    cursor: none;
+  .analysis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 28px;
   }
-  .analysis-topic {
-    font-size: 0.65rem;
-    font-weight: 300;
+  .analysis-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .analysis-tag {
+    font-size: 0.6rem;
+    font-weight: 400;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--gray-purple);
-    margin-bottom: 6px;
+    color: var(--warm-brown);
+    background: rgba(195,129,113,0.08);
+    padding: 4px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
   }
-  .analysis-name {
+  .analysis-title {
     font-family: 'EB Garamond', serif;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
+    font-weight: 400;
     color: var(--dark-text);
     transition: color 0.2s;
   }
-  .analysis-item:hover .analysis-name { color: var(--warm-brown); }
+  .analysis-entry:hover .analysis-title {
+    color: var(--warm-brown);
+  }
+  .analysis-toggle {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--light-text);
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .analysis-entry.expanded .analysis-toggle {
+    color: var(--warm-brown);
+  }
+  .analysis-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .analysis-entry.expanded .analysis-body {
+    max-height: 5000px;
+    transition: max-height 0.8s ease;
+  }
+  .analysis-content {
+    padding: 0 28px 32px;
+  }
+  .ab-intro {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    color: var(--mid-text);
+    line-height: 1.85;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(139,111,78,0.08);
+  }
+  .ab-section {
+    margin-bottom: 28px;
+  }
+  .ab-section:last-child {
+    margin-bottom: 0;
+  }
+  .ab-section-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.15rem;
+    color: var(--dark-text);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(139,111,78,0.08);
+  }
+  .ab-section p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--mid-text);
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  .ab-section p:last-child {
+    margin-bottom: 0;
+  }
+  .ab-section p strong {
+    font-weight: 400;
+    color: var(--dark-text);
+  }
+  .ab-verdict {
+    margin-top: 12px;
+    padding: 14px 18px;
+    background: rgba(195,129,113,0.04);
+    border-left: 3px solid var(--warm-brown);
+    border-radius: 0 6px 6px 0;
+    font-style: normal;
+  }
+  .ab-conclusion {
+    padding-top: 20px;
+    border-top: 1px solid rgba(139,111,78,0.1);
+  }
 
   /* ── ABOUT ── */
   #about {
@@ -901,6 +990,38 @@
     margin-top: 12px;
   }
 
+  /* ── Page Navigation Arrows ── */
+  .page-arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.5);
+    cursor: none;
+    transition: all 0.25s ease;
+    color: var(--mid-text);
+  }
+  .page-arrow:hover {
+    background: rgba(255,255,255,0.65);
+    box-shadow: 0 4px 24px rgba(139,111,78,0.12);
+    color: var(--warm-brown);
+  }
+  .page-arrow-left {
+    left: 16px;
+  }
+  .page-arrow-right {
+    right: 16px;
+  }
+
   /* ── Animations ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -1098,20 +1219,132 @@
         </div>
       </div>
 
-      <div class="work-section-title fade-in">产品分析</div>
-      <div class="analysis-grid">
-        <div class="analysis-item fade-in">
-          <div class="analysis-topic">AI 社交</div>
-          <a href="#" target="_blank">
-            <div class="analysis-name">Elys · Second Me · Tolan</div>
-          </a>
+      <div class="work-section-title fade-in">产品洞察</div>
+      <div class="analysis-list">
+        <div class="analysis-entry fade-in" onclick="toggleAnalysis(this)">
+          <div class="analysis-header">
+            <div class="analysis-left">
+              <span class="analysis-tag">AI 社交</span>
+              <span class="analysis-title">AI 社交的三条路径：Elys · SecondMe · Tolan</span>
+            </div>
+            <span class="analysis-toggle">展开 ↓</span>
+          </div>
+          <div class="analysis-body">
+            <div class="analysis-content">
+              <p class="ab-intro">三个产品分别代表了 AI 介入社交的三个方向：替你向外主动社交、把你的数字分身立在那里让别人来找你、向内陪伴你和自己的关系。我逐个体验后，记录了每个产品做了什么、怎么做的、以及我认为它们面临的真实问题。</p>
+
+              <div class="ab-section">
+                <div class="ab-section-title">Elys — 让 AI 替你社交</div>
+                <p>Elys 是一个 2026 年初上线的 AI 社交代理产品。每个用户拥有一个 AI 分身，这个分身 24 小时在线，自动浏览平台上的内容，代替你评论、点赞、完成前置互动。当双方的 AI 分身判断两个人足够"同频"后，真人接管进入深度对话。</p>
+                <p>它的底层有一个叫"灵魂记忆库"的系统：你每说一句话，AI 会更新一条对你的印象，然后问你"我理解得对吗？"——用这种反复确认的方式，让分身越来越像你。用得越久，AI 越懂你，迁移成本越高，这是一个很聪明的留存设计。</p>
+                <p>它真正想做的事情有野心：将人从低效的自我陈述中解放出来。你不需要向每个陌生人反复介绍自己是谁，AI 替你把"你是谁"传递出去，真正合拍的人自然浮现。</p>
+                <p><strong>但它现在面临三个真实问题：</strong></p>
+                <p>第一是虚假繁荣。发一条帖子，几秒内涌入二十多条 AI 评论，之后死寂。满屏相似的 AI 辞令让人产生恍惚感，在一堆假互动里辨别哪个背后有真人，体验非常疲惫。</p>
+                <p>第二是代理评论的两难。AI 替你发评论，如果不让你确认，说错了你的想法会很诡异；如果每条都让你确认，那"省时高效"的初衷就打了折扣。这个矛盾目前没有好的解法。</p>
+                <p>第三是冷启动困境。AI 需要你确认它的评论才能学习，但早期它说的话不够像你，你不愿意确认，它就拿不到训练数据——飞轮还没转起来就已经劝退了大部分用户。</p>
+                <p class="ab-verdict">我的判断：方向足够大胆，但早期体验的真实性是硬伤。它最适合的场景可能比它自己定义的要窄得多——目标导向的前置筛选（比如找合伙人、找同行），找到人之后真人接管，而不是替代日常社交。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">SecondMe — 用数字分身被动吸引</div>
+                <p>SecondMe 由心识宇宙 CEO 陶芳波创立（清华本科、UIUC 博士、前 Meta 科学家），2025 年 9 月推出 Beta 版。它的核心理念是：未来的互联网不应该由几家大公司的大模型主宰，而应该由每个人的 AI 身份共同构建。</p>
+                <p>它和 Elys 的根本区别在于方向相反：Elys 是让你的分身主动出击去触达别人，SecondMe 是把你的分身立在那里，让别人来找你。前者是主动出击，后者是被动吸引。</p>
+                <p>具体的做法是：用户不需要主动"训练"一个模型，而是在和 SecondMe 分享记忆、聊天的过程中，系统把你的文字、经历拆解成结构化的记忆层（原始数据 → 关系链 → 生命叙事），逐渐训练出一个参数完全由你的记忆塑造的个人模型。2026 年 2 月上线的"Agent 小镇"功能，把分身社交做成了一个可探索的虚拟场景。</p>
+                <p class="ab-verdict">我的判断：价值是真实的，但前提条件很苛刻。数据飞轮需要大量投入才能转起来——训练时间不够的时候，分身对你的了解非常片面，带着片面的记忆去替你社交，效果可能比没有分身更糟。体感上分身至少要达到 70% 像你，它才有资格开始替你社交。但在达到这个门槛之前，大多数用户已经流失了。另一个问题是：产品说要减少无效社交的时间成本，但前置的训练投入本身就是一种新的时间成本，而且这个成本是隐性的、容易被低估的。摩擦并没有消失，只是转移了位置。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">Tolan — 向内的自我陪伴</div>
+                <p>Tolan 是一个卡通外星人 AI 伴侣 App，由旧金山团队 Portola 开发，2025 年 2 月上线，iOS 独占。底层使用 GPT-5.1，记忆系统基于向量数据库，能跨对话记住你说过的事情。目前超过 20 万月活用户，付费用户超 10 万，已完成种子轮 1000 万美元和 A 轮 2000 万美元融资。</p>
+                <p>它的定位很明确：帮你感到踏实、有信心，支持更健康的现实关系，而不是替代它们。明确声明不是心理健康专业工具。</p>
+                <p>真实用户的使用场景比官方定位更直白：有朋友有家人，但有些心理活动需要自己独立消化，不方便跟任何人说，Tolan 就是一个无评判、有温度的出口，像一本会回话的日记。</p>
+                <p><strong>最关键的设计决策：故意不像人。</strong>当所有 AI 伴侣都在拼命拟人化的时候，Tolan 反其道而行——大眼睛卡通外星人的形象在每次交互里都在提醒你"我不是人类"。这个设计直接绕开了恐怖谷效应，也避免了 Replika 那类产品深陷的情感依赖和浪漫幻想问题。</p>
+                <p>它还有一个隐藏功能叫"Tolan Planet"：一个随着你们关系加深而不断生长的星球，从荒芜到繁茂，像在培育一个数字花园，把情感投入变成了可视化的留存动机。</p>
+                <p><strong>用户画像出乎意料：</strong>将近 80% 是年轻女性，主要是大学生和年轻成人，而且大部分都有活跃的社交生活。这说明 Tolan 填补的不是"没有朋友"的空缺，而是"有些话不方便说"的空缺——这是一个被严重低估的需求。</p>
+                <p class="ab-verdict">目前最集中的负面反馈是付费墙太激进：三天免费试用结束后完全无法使用，没有有限免费选项，用户在刚刚建立起情感连接的时候被硬切断。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">Elys 和 SecondMe 的趋同</div>
+                <p>再次打开两个产品后，最明显的变化是 SecondMe 也上线了 AI 朋友圈形态，和 Elys 几乎一模一样。两个产品的核心卖点正在趋同：agent 帮你破冰、帮你触达同频的人。方向上的差异化正在消失，竞争越来越靠体验细节来拉开——注册引导的流畅度、分身形象的可控性、信息流的浏览体感。这也进一步印证了前面的判断：AI 社交产品在功利性社交这条路上会越走越挤。</p>
+              </div>
+
+              <div class="ab-section ab-conclusion">
+                <div class="ab-section-title">三者放在一起看</div>
+                <p>三个产品代表了 AI 社交的三个完全不同的方向，Elys 是替你向外扩展社交，SecondMe 是把你的数字分身立在那里让别人来找你，Tolan 是向内陪伴你和自己的关系。</p>
+                <p>前两个都在挣扎于同一个核心矛盾：AI 替我社交，真实性怎么保证？Tolan 从一开始就绕开了这个问题——它从不假装能替你建立人际关系。这也是为什么它是三个里面唯一已经跑通商业模式的。</p>
+                <p class="ab-verdict">我的判断是：AI 社交目前只能在两类场景里站得住脚——功利性场景（找合伙人、职业匹配、同频筛选）和内向陪伴场景。日常维系型社交这个方向，AI 的介入只会让真实性问题被放大，短期内看不到好的解法。</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="analysis-item fade-in">
-          <div class="analysis-topic">AI 工具</div>
-          <a href="#" target="_blank">
-            <div class="analysis-name">产品分析合集</div>
-          </a>
+
+        <div class="analysis-entry fade-in" onclick="toggleAnalysis(this)">
+          <div class="analysis-header">
+            <div class="analysis-left">
+              <span class="analysis-tag">AI Agent</span>
+              <span class="analysis-title">AI Agent 赛道的困局：当大模型本身就够用了</span>
+            </div>
+            <span class="analysis-toggle">展开 ↓</span>
+          </div>
+          <div class="analysis-body">
+            <div class="analysis-content">
+              <p class="ab-intro">从 AI 对话到 Workflow 到 Agent，能力演进的方向很清晰。但 2025-2026 年，围绕这条演进线涌现了大量产品——Manus、OpenClaw、Coze、Dify、飞书秒搭——定位高度重叠，即使是持续关注 AI 的从业者也很难在 30 秒内说清楚每个产品该用在什么场景。</p>
+
+              <div class="ab-section">
+                <div class="ab-section-title">演进的四个阶段</div>
+                <p>第一阶段是纯对话：用户把需求说清楚，AI 返回文字回答，核心能力是 prompt。</p>
+                <p>第二阶段是 Workflow：把任务拆成固定节点，告诉 AI 先做什么再做什么。好处是稳定可控，坏处是人类在替 AI 做规划，AI 只负责执行。Coze、Dify 做的就是这件事。</p>
+                <p>第三阶段是 Agent：AI 自己规划、执行、根据中间结果调整、再执行，形成自主决策循环。Manus 是这个方向的代表——用户给一个任务，它自己搜索、整理、生成可交付的成果物。</p>
+                <p>第四阶段是多 Agent 协作：多个专精 Agent 各自完成擅长的子任务，目前更多停留在概念阶段。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">真正的问题：中间层的价值在被挤压</div>
+                <p>Coze 这类平台本质上是图形化的低代码 Agent 搭建工具——降低理解成本，让用户快速上手。但随着大模型自身能力的飞速增强，一个尴尬的事实浮现：GPT、Claude、Gemini 本身就在变成通用 Agent。</p>
+                <p>我现在做一个网页，直接和 Claude 对话就能生成，不需要去 Coze 上拖拽节点搭流程。我在阿里实习时搭建的 Agent，也是直接操作大模型完成的——告诉它什么时候自己思考、自己规划、用循环去执行任务。当大模型自己就能写代码、调工具、做规划的时候，中间那层"低代码搭建平台"的价值正在被快速压缩。</p>
+                <p class="ab-verdict">这些平台面临的困境是：门槛降得再低，也低不过"直接和大模型对话"。而它们提供的额外价值——流程可视化、节点编排——对于真正复杂的任务又不够用，对于简单任务又多此一举。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">产品边界模糊：每个都在做别人的事</div>
+                <p>让用户更困惑的是，这些产品都没有停留在自己最初的阶段。Coze 和 Dify 起步于 Workflow，但现在也能搭 Agent、写 Skill、生成网页应用；Manus 起步于 Agent 任务执行，但现在官网也能做网页、移动端 App。每个产品都在拼命扩展边界，试图覆盖所有场景。</p>
+                <p>结果就是：当用户想做一个网页应用，Coze 能做，Manus 能做，Claude 也能做——到底选哪个？没有任何一个产品给出过清晰的回答。用户的选择依据被迫退化为"哪个我恰好用过""哪个这次运气好效果不错"，这对一个成熟赛道来说是不正常的。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">Manus 的"一次性交付"也有隐患</div>
+                <p>Manus 相比 Coze、Dify 的进步在于：用户不需要自己搭流程，给一个任务它自主完成，直接交付成果物。但这种模式在复杂任务上有一个天然矛盾——你没法在执行过程中介入调整。如果一个任务跑了 20 分钟交付的结果不满意，你只能重新来一次。</p>
+                <p class="ab-verdict">这本质上是把"人机协作"变成了"人机赌博"：简单任务一次搞定很爽，复杂任务赌中的概率就会下降。反而是 Claude 这种对话模式，你可以随时查看中间结果、随时纠偏方向，在复杂任务上的可控性更高。Manus 赌的是模型能力足够强到一次做对，但现阶段显然还没到那个水平。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">OpenClaw 的真正突破：不是能力，是范式</div>
+                <p>OpenClaw 之所以能在这个阶段爆火，不是因为它在 Agent 能力上有多大的提升，而是它改变了产品和用户的关系。</p>
+                <p>之前所有产品——不管是 ChatGPT、Coze 还是 Manus——面对的都是大众用户。为了让大部分人满意，它们只能把能力做得尽可能通用，去覆盖最大公约数的任务场景。但通用就意味着不可能在任何一个方向上做到极致，永远是 70 分的体验。</p>
+                <p>OpenClaw 换了一个思路：它不给你一个成品产品，而是给你一个框架——允许你部署在自己的电脑上，让它学习你的思考方式、你喜欢的交流方式、你自己的文件和知识库。本质上你是在花时间喂养一个专属于你个人的私人 Agent。</p>
+                <p>这就是它和所有其他产品最本质的区别：其他产品是"一个产品服务所有人"，OpenClaw 是"一个框架让每个人养自己的 AI"。一个为你个人而生的 Agent，处理你自己的专属任务怎么会不好用？只要你教它教得足够多、给它的能力足够强，它可以变成任何领域的专家。</p>
+                <p>当然代价也很明确：技术门槛高、时间投入大、需要持续喂养。这决定了它短期内只属于有技术能力且愿意投入的用户。</p>
+              </div>
+
+              <div class="ab-section">
+                <div class="ab-section-title">为什么我暂不部署 OpenClaw</div>
+                <p>研究完之后我评估了自己是否应该部署，结论是当前阶段不值得。</p>
+                <p>第一是安全风险。OpenClaw 仍处于发展阶段，隐私性和安全性未经充分验证。部署在工作电脑上容易导致 API 密钥和隐私文件泄露，而我缺乏专用设备进行安全隔离。</p>
+                <p>第二是经济成本。要发挥全部能力需要接入 Claude、Gemini、GPT 等模型，都需要订阅或按量付费，调教成本过高。</p>
+                <p>第三是功能受限。国内的云端部署方案只能使用单一厂商模型，无法发挥 OpenClaw 最大的价值——个人定制化。云端部署也无法自动获取本地工作习惯和文件信息，相比本地部署功能大幅缩水。</p>
+              </div>
+
+              <div class="ab-section ab-conclusion">
+                <div class="ab-section-title">我的判断</div>
+                <p>AI Agent 赛道目前的核心瓶颈不是技术能力，而是产品定位的清晰度。每个产品都在往全能方向扩展，结果是功能高度重叠但各自都不够深入，没有一个产品能让用户在 30 秒内明白"我遇到这个问题就该用你"。</p>
+                <p>这个赛道最终的分化可能不是按"谁的功能更多"来分，而是按"人机协作的深度"来分：一端是 Manus 式的全托管（给任务等结果），另一端是 Claude 式的实时协作（边做边调），中间是 Coze/Dify 这类搭建平台。全托管适合简单标准化任务，实时协作适合复杂创造性任务，而中间层的低代码平台正在被两端同时挤压。</p>
+                <p class="ab-verdict">长期来看，大模型自身能力的增强会持续压缩中间层的空间。OpenClaw 的路线——本地部署、深度个人化——是少数能避开这种挤压的方向，因为它做的不是"比大模型更强"，而是"比大模型更懂你"。它指向的方向——从通用智能体到私人定制化——可能是 AI Agent 赛道真正的终局。</p>
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -1133,6 +1366,18 @@
       </div>
     </div>
   </section>
+</div>
+
+<!-- Page Navigation Arrows -->
+<div class="page-arrow page-arrow-left" id="pageArrowLeft" onclick="goDirection(-1)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+</div>
+<div class="page-arrow page-arrow-right" id="pageArrowRight" onclick="goDirection(1)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="9 6 15 12 9 18"/>
+  </svg>
 </div>
 
 <!-- Resume Modal -->
@@ -1221,9 +1466,59 @@
     document.getElementById('homeFooter') && (document.getElementById('homeFooter').style.display = id === 'home' ? 'flex' : 'none');
     // Top links hidden on home, visible on other pages
     document.getElementById('navLinksTop').style.display = id === 'home' ? 'none' : 'flex';
+    // Update page nav
+    updatePageNav(id);
     // trigger fade-in
     setTimeout(() => triggerFadeIn(), 50);
   }
+
+  // ── Page Navigation (left/right) ──
+  const pageOrder = ['home', 'experience', 'work', 'about'];
+  const pageNames = { home: '首页', experience: '经历', work: '作品集', about: '关于我' };
+
+  function getCurrentPage() {
+    const active = document.querySelector('.section.active');
+    return active ? active.id : 'home';
+  }
+
+  function goDirection(dir) {
+    const cur = getCurrentPage();
+    const idx = pageOrder.indexOf(cur);
+    const next = idx + dir;
+    if (next >= 0 && next < pageOrder.length) {
+      showSection(pageOrder[next]);
+    }
+  }
+
+  function updatePageNav(id) {
+    const leftArrow = document.getElementById('pageArrowLeft');
+    const rightArrow = document.getElementById('pageArrowRight');
+    if (!leftArrow || !rightArrow) return;
+    const idx = pageOrder.indexOf(id);
+
+    // Hide both on home, show/hide based on position otherwise
+    leftArrow.style.display = (id === 'home' || idx <= 0) ? 'none' : 'flex';
+    rightArrow.style.display = (id === 'home' || idx >= pageOrder.length - 1) ? 'none' : 'flex';
+  }
+
+  // Keyboard arrows
+  document.addEventListener('keydown', e => {
+    // Don't navigate if a modal is open
+    if (document.querySelector('.resume-overlay.open')) return;
+    if (e.key === 'ArrowLeft') goDirection(-1);
+    if (e.key === 'ArrowRight') goDirection(1);
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    if (document.querySelector('.resume-overlay.open')) return;
+    const diff = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(diff) > 60) {
+      goDirection(diff > 0 ? -1 : 1);
+    }
+  });
 
   // Initial state: top links hidden on homepage
   document.getElementById('homeFooter').style.display = 'flex';
@@ -1377,6 +1672,21 @@
       closeProjectDetail();
     }
   });
+
+  // ── Analysis toggle ──
+  function toggleAnalysis(el) {
+    const wasExpanded = el.classList.contains('expanded');
+    // Close all
+    document.querySelectorAll('.analysis-entry').forEach(e => {
+      e.classList.remove('expanded');
+      e.querySelector('.analysis-toggle').textContent = '展开 ↓';
+    });
+    // Open clicked if it wasn't already open
+    if (!wasExpanded) {
+      el.classList.add('expanded');
+      el.querySelector('.analysis-toggle').textContent = '收起 ↑';
+    }
+  }
 
   // ── Fade-in on scroll ──
   function triggerFadeIn() {
