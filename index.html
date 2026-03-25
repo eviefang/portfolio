@@ -7,6 +7,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400&family=EB+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  if (typeof THREE === 'undefined') {
+    var s = document.createElement('script');
+    s.src = 'https://unpkg.com/three@0.128.0/build/three.min.js';
+    document.head.appendChild(s);
+  }
+</script>
 <style>
   :root {
     --cream: #faf6f0;
@@ -17,7 +24,7 @@
     --dark-text: #2a1f1a;
     --mid-text: #5a3f35;
     --light-text: #9a7a6a;
-    --accent: #D0B448;
+    --accent: #F8D754;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -65,6 +72,16 @@
     z-index: 0;
     width: 100%;
     height: 100%;
+    /* CSS fallback: animated warm gradient if Three.js fails to load */
+    background: radial-gradient(ellipse at 30% 70%, rgba(195,129,113,0.35) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 25%, rgba(237,218,213,0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 60%, rgba(248,215,84,0.12) 0%, transparent 45%),
+                #f5f0ea;
+    animation: fallbackDrift 12s ease-in-out infinite alternate;
+  }
+  @keyframes fallbackDrift {
+    0%   { background-position: 0% 0%, 100% 100%, 50% 50%; }
+    100% { background-position: 10% 10%, 90% 85%, 40% 60%; }
   }
 
   /* grain overlay */
@@ -179,6 +196,16 @@
   .home-title em {
     font-style: italic;
     color: var(--dark-text);
+  }
+
+  /* ── Title hover: chars vanish then reveal right-to-left ── */
+  .home-title {
+    cursor: none;
+  }
+
+  .title-char {
+    display: inline-block;
+    position: relative;
   }
 
   .home-subtitle {
@@ -300,12 +327,6 @@
     background: linear-gradient(to bottom, transparent, var(--accent), var(--fog-blue), var(--gray-purple), transparent);
   }
 
-  .timeline-item {
-    position: relative;
-    margin-bottom: 48px;
-    cursor: none;
-  }
-
   .timeline-dot {
     position: absolute;
     left: -36px;
@@ -320,10 +341,6 @@
     background: var(--warm-brown);
     border-color: var(--warm-brown);
     transform: scale(1.4);
-  }
-  .timeline-item.expanded .timeline-dot {
-    background: var(--warm-brown);
-    border-color: var(--warm-brown);
   }
 
   .timeline-year {
@@ -351,17 +368,6 @@
     letter-spacing: 0.04em;
   }
 
-  .timeline-detail {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease, opacity 0.3s ease;
-    opacity: 0;
-  }
-  .timeline-item.expanded .timeline-detail {
-    max-height: 200px;
-    opacity: 1;
-    margin-top: 12px;
-  }
   .timeline-detail p {
     font-size: 0.85rem;
     font-weight: 300;
@@ -525,6 +531,148 @@
     letter-spacing: 0.06em;
   }
 
+  /* ── Resume Button ── */
+  .resume-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--warm-brown);
+    background: transparent;
+    border: 1px solid rgba(195,129,113,0.35);
+    border-radius: 24px;
+    padding: 9px 20px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    cursor: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    margin-bottom: 8px;
+  }
+  .resume-btn:hover {
+    background: var(--warm-brown);
+    color: #fff;
+    border-color: var(--warm-brown);
+  }
+  .resume-btn svg {
+    transition: transform 0.2s ease;
+  }
+  .resume-btn:hover svg {
+    transform: translateY(-1px);
+  }
+
+  /* ── Resume Modal ── */
+  .resume-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(42,31,26,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .resume-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .resume-modal {
+    width: 90vw;
+    max-width: 800px;
+    height: 88vh;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 40px 120px rgba(42,31,26,0.3);
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .resume-overlay.open .resume-modal {
+    transform: translateY(0) scale(1);
+  }
+  .resume-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(139,111,78,0.1);
+    background: var(--cream);
+  }
+  .resume-modal-title {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--dark-text);
+  }
+  .resume-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .resume-download {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--warm-brown);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 14px;
+    border: 1px solid rgba(195,129,113,0.3);
+    border-radius: 16px;
+    cursor: none;
+    transition: all 0.2s ease;
+  }
+  .resume-download:hover {
+    background: var(--warm-brown);
+    color: #fff;
+    border-color: var(--warm-brown);
+  }
+  .resume-close {
+    background: none;
+    border: none;
+    color: var(--light-text);
+    cursor: none;
+    padding: 4px;
+    display: flex;
+    transition: color 0.2s;
+  }
+  .resume-close:hover {
+    color: var(--dark-text);
+  }
+  .resume-iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+  }
+
+  /* ── Timeline hover expand (replaces click) ── */
+  .timeline-item {
+    position: relative;
+    margin-bottom: 48px;
+    cursor: none;
+  }
+  .timeline-item .timeline-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.35s ease;
+    opacity: 0;
+  }
+  .timeline-item:hover .timeline-detail {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 12px;
+  }
+
   /* ── Animations ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -566,7 +714,7 @@
   <!-- HOME -->
   <section class="section active" id="home">
     <div class="home-eyebrow">Product · AI · Human</div>
-    <h1 class="home-title">方竹<em>伊</em></h1>
+    <h1 class="home-title" id="homeTitle"><span class="title-char">方</span><span class="title-char">竹</span><span class="title-char"><em>伊</em></span></h1>
     <p class="home-subtitle">留学背景 · 技术敏感 · 从体验到产品</p>
     <p class="home-tagline">用AI解决真实问题，从痛点到可以体验的东西。</p>
     <div class="home-footer" id="homeFooter">
@@ -575,7 +723,7 @@
         正在寻找 AI 产品方向的全职机会
       </div>
       <div class="home-contact">
-        <a href="mailto:zhuyifang77@gmail.com">zhuyifang77@gmail.com</a>
+        <a href="/cdn-cgi/l/email-protection#b7cddfc2ceded1d6d9d08080f7d0dad6dedb99d4d8da"><span class="__cf_email__" data-cfemail="1d67756864747b7c737a2a2a5d7a707c7471337e7270">[email&#160;protected]</span></a>
         <a class="icon-link" href="https://github.com/" target="_blank">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
@@ -589,47 +737,59 @@
   <!-- EXPERIENCE -->
   <section class="section" id="experience">
     <div>
-      <div class="section-header fade-in">
-        <div class="section-label">Timeline</div>
-        <h2 class="section-title">经历</h2>
+      <div class="section-header fade-in" style="display:flex;justify-content:space-between;align-items:flex-end;">
+        <div>
+          <div class="section-label">Timeline</div>
+          <h2 class="section-title">经历</h2>
+        </div>
+        <button class="resume-btn" onclick="openResume()" cursor="none">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          查看简历
+        </button>
       </div>
       <div class="timeline">
-        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+        <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
           <div class="timeline-year">2019</div>
           <div class="timeline-role">数据科学与大数据技术</div>
           <div class="timeline-org">北京体育大学</div>
           <div class="timeline-detail"><p>本科就读于北京体育大学，专业为数据科学与大数据技术，建立了扎实的技术基础与数据思维。</p></div>
         </div>
-        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+        <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
           <div class="timeline-year">2023 — 2024</div>
           <div class="timeline-role">备考与申请</div>
           <div class="timeline-org">雅思 7.5 · 独立申请帝国理工</div>
           <div class="timeline-detail"><p>自主完成全部申请材料准备，雅思取得 7.5 分，成功申请至帝国理工学院。</p></div>
         </div>
-        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+        <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
           <div class="timeline-year">2024</div>
           <div class="timeline-role">环境数据科学与机器学习，Merit 优等</div>
           <div class="timeline-org">Imperial College London</div>
           <div class="timeline-detail"><p>以 Merit 优等成绩完成帝国理工学院环境数据科学与机器学习硕士项目，深化了对 AI/ML 在真实场景中应用的理解。</p></div>
         </div>
-        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+        <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
           <div class="timeline-year">2025.01</div>
           <div class="timeline-role">产品设计实习生</div>
           <div class="timeline-org">Recraft AI · 伦敦</div>
           <div class="timeline-detail"><p>在 AI 设计工具 Recraft AI 担任产品设计实习生，参与产品功能迭代与用户体验优化，积累了 AI 工具类产品的一线经验。</p></div>
         </div>
-        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+        <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
           <div class="timeline-year">2025.07</div>
           <div class="timeline-role">技术产品实习生</div>
           <div class="timeline-org">阿里巴巴橙狮体育 · 杭州</div>
           <div class="timeline-detail"><p>加入阿里巴巴橙狮体育担任技术产品实习生，参与体育科技方向的产品规划与落地工作。</p></div>
         </div>
-        <div class="timeline-item fade-in" onclick="toggleTimeline(this)">
+        <div class="timeline-item fade-in" >
           <div class="timeline-dot"></div>
           <div class="timeline-year">2025.12</div>
           <div class="timeline-role">硕士毕业 · 求职中</div>
@@ -700,7 +860,32 @@
   </section>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- Resume Modal -->
+<div class="resume-overlay" id="resumeOverlay" onclick="closeResume(event)">
+  <div class="resume-modal">
+    <div class="resume-modal-header">
+      <span class="resume-modal-title">简历预览</span>
+      <div class="resume-modal-actions">
+        <a href="/resume.pdf" target="_blank" class="resume-download" download>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          下载
+        </a>
+        <button class="resume-close" onclick="closeResume()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <iframe class="resume-iframe" id="resumeIframe" src="about:blank"></iframe>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── Cursor ──
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
@@ -722,7 +907,7 @@
   }
   animateRing();
 
-  document.querySelectorAll('a, button, .timeline-item, .card, .analysis-item').forEach(el => {
+  document.querySelectorAll('a, button, .timeline-item, .card, .analysis-item, .home-title, .resume-btn, .resume-close, .resume-download').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.width = '14px';
       cursor.style.height = '14px';
@@ -749,12 +934,28 @@
   // Home footer visibility
   document.getElementById('homeFooter').style.display = 'flex';
 
-  // ── Timeline toggle ──
-  function toggleTimeline(el) {
-    const isExpanded = el.classList.contains('expanded');
-    document.querySelectorAll('.timeline-item').forEach(i => i.classList.remove('expanded'));
-    if (!isExpanded) el.classList.add('expanded');
+  // ── Timeline toggle (now hover-based via CSS, no JS needed) ──
+
+  // ── Resume modal ──
+  function openResume() {
+    const overlay = document.getElementById('resumeOverlay');
+    const iframe = document.getElementById('resumeIframe');
+    iframe.src = '/resume.pdf';
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
+  function closeResume(e) {
+    if (e && e.target !== e.currentTarget) return;
+    const overlay = document.getElementById('resumeOverlay');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      document.getElementById('resumeIframe').src = 'about:blank';
+    }, 350);
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeResume();
+  });
 
   // ── Fade-in on scroll ──
   function triggerFadeIn() {
@@ -768,11 +969,104 @@
 
   window.addEventListener('scroll', triggerFadeIn);
   document.addEventListener('DOMContentLoaded', triggerFadeIn);
+
+  // ── Sound Engine: Piano Key ──
+  const SFX = (function() {
+    let ctx = null;
+
+    function getCtx() {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') ctx.resume();
+      return ctx;
+    }
+
+    // Piano key: sine + detuned pair for warmth, natural decay
+    function key(freq, delay) {
+      const ac = getCtx();
+      const t = ac.currentTime + (delay || 0);
+
+      [0, 1.5, -1.5].forEach((detune, idx) => {
+        const o = ac.createOscillator();
+        const g = ac.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, t);
+        o.detune.setValueAtTime(detune, t);
+        const vol = idx === 0 ? 0.10 : 0.03;
+        g.gain.setValueAtTime(vol, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+        o.connect(g); g.connect(ac.destination);
+        o.start(t); o.stop(t + 0.55);
+      });
+    }
+
+    // Title reveal: 3 ascending keys, synced with char reveal timing
+    function titleReveal() {
+      key(1050, 0);
+      key(1200, 0.16);
+      key(1400, 0.32);
+    }
+
+    // Section switch: single key
+    function sectionSwitch() {
+      key(1100, 0);
+    }
+
+    return { titleReveal, sectionSwitch };
+  })();
+
+  // ── Title hover: vanish then reveal right-to-left ──
+  (function() {
+    const title = document.getElementById('homeTitle');
+    const chars = title.querySelectorAll('.title-char');
+    // Right-to-left order: 伊(2) → 竹(1) → 方(0)
+    const order = [2, 1, 0];
+    const charDelay = 160;  // ms between each char
+    const revealDuration = 420; // ms per char transition
+    let animating = false;
+
+    // Set transition on each char
+    chars.forEach(ch => {
+      ch.style.transition = `opacity ${revealDuration}ms cubic-bezier(0.22, 0.61, 0.36, 1), transform ${revealDuration}ms cubic-bezier(0.22, 0.61, 0.36, 1)`;
+    });
+
+    title.addEventListener('mouseenter', () => {
+      if (animating) return;
+      animating = true;
+
+      // Play ascending bubble sound
+      SFX.titleReveal();
+
+      // Step 1: instantly hide all chars
+      chars.forEach(ch => {
+        ch.style.transition = 'none';
+        ch.style.opacity = '0';
+        ch.style.transform = 'translateY(18px)';
+      });
+
+      // Step 2: force reflow, then reveal one by one right-to-left
+      void title.offsetHeight;
+
+      order.forEach((idx, i) => {
+        setTimeout(() => {
+          chars[idx].style.transition = `opacity ${revealDuration}ms cubic-bezier(0.22, 0.61, 0.36, 1), transform ${revealDuration}ms cubic-bezier(0.22, 0.61, 0.36, 1)`;
+          chars[idx].style.opacity = '1';
+          chars[idx].style.transform = 'translateY(0)';
+          if (i === order.length - 1) {
+            setTimeout(() => { animating = false; }, revealDuration);
+          }
+        }, i * charDelay);
+      });
+    });
+  })();
 </script>
 
 <script>
 // ── Three.js Organic Warm Flow Background ──
-(function() {
+(function initShader() {
+  if (typeof THREE === 'undefined') {
+    // Retry after fallback CDN loads
+    return setTimeout(initShader, 200);
+  }
   const canvas = document.getElementById('ink-canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -822,9 +1116,9 @@
       // Exact hex values as specified, full saturation
       vec3 coral = vec3(0.765, 0.506, 0.443); // #C38171
       vec3 cream = vec3(0.929, 0.855, 0.835); // #EDDAD5
-      vec3 gold  = vec3(0.816, 0.706, 0.282); // #D0B448
+      vec3 gold  = vec3(0.973, 0.843, 0.329); // #F8D754
 
-      float spd = uTime * 2.5;
+      float spd = uTime * 3.4;
 
       // 4 blob centers, each in a quadrant, orbiting independently
       vec2 anchors[4];
@@ -851,26 +1145,26 @@
 
       for (int i = 0; i < 4; i++) {
         vec2 center = anchors[i] + vec2(
-          0.32 * sin(spd * freqs[i].x + phases[i]),
-          0.28 * cos(spd * freqs[i].y + phases[i])
+          0.60 * sin(spd * freqs[i].x + phases[i]),
+          0.60 * cos(spd * freqs[i].y + phases[i])
         );
 
         // Gentle organic shape
         vec2 d = uv - center;
         float angle = atan(d.y, d.x);
-        float distort = 1.0 + 0.10 * sin(angle * 2.0 + spd * 0.3 + float(i));
+        float distort = 1.0 + 0.31 * sin(angle * 2.0 + spd * 0.3 + float(i));
         float dist = length(d) / max(distort, 0.5);
 
-        float sz = 0.38 * aspect;
+        float sz = 0.32 * aspect;
         float t01 = clamp(dist / sz, 0.0, 1.0);
 
         // Radial gradient: coral center → cream edge, gold as subtle warm tint only
         vec3 gc = mix(coral, cream, smoothstep(0.0, 1.0, t01));
         // Gold as a very faint warm nudge in the mid zone only
-        gc = mix(gc, mix(gc, gold, 0.18), smoothstep(0.3, 0.6, t01) * smoothstep(0.9, 0.6, t01));
+        gc = mix(gc, mix(gc, gold, 0.12), smoothstep(0.3, 0.6, t01) * smoothstep(0.9, 0.6, t01));
 
         // Weight: strong Gaussian-like falloff
-        float w = exp(-dist * dist / (sz * sz * 0.55));
+        float w = exp(-dist * dist / (sz * sz * 1.03));
 
         accumulated += gc * w;
         totalW += w;
@@ -880,16 +1174,16 @@
       if (totalW > 0.001) {
         vec3 blobColor = accumulated / totalW;
         // High alpha so colors actually show up, like the reference
-        float a = clamp(totalW * 0.9, 0.0, 0.82);
+        float a = clamp(totalW * 0.9, 0.0, 0.69);
         col = mix(bg, blobColor, a);
       }
 
-      // Mouse: very small soft brightening
+      // Mouse: soft glow with wider radius
       if (uMouse.x > 0.0) {
         vec2 m = vec2(uMouse.x * aspect, uMouse.y);
         float md = length(uv - m);
-        float h = smoothstep(0.05, 0.0, md) * 0.5 + smoothstep(0.14, 0.0, md) * 0.1;
-        col = mix(col, bg * 1.01, clamp(h, 0.0, 0.7));
+        float h = smoothstep(0.14, 0.0, md) * 0.65 + smoothstep(0.40, 0.0, md) * 0.13;
+        col = mix(col, bg * 1.02, clamp(h, 0.0, 0.75));
       }
 
       // Gentle vignette
@@ -918,7 +1212,7 @@
     uniforms.uMouse.value.set(smx, smy);
     renderer.render(scene, camera);
   }
-  requestAnimationFrame(animate);
+  animate(0);
 
   window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
