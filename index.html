@@ -9,15 +9,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
   :root {
-    --cream: #faf9f7;
-    --warm-brown: #b07040;
-    --soft-pink: #e8d8c0;
-    --fog-blue: #8aa4b0;
-    --gray-purple: #7a96a4;
-    --dark-text: #1e1e1e;
-    --mid-text: #4a4640;
-    --light-text: #7a7068;
-    --accent: #c09060;
+    --cream: #faf6f0;
+    --warm-brown: #C38171;
+    --soft-pink: #EDDAD5;
+    --fog-blue: #d4b896;
+    --gray-purple: #c9a882;
+    --dark-text: #2a1f1a;
+    --mid-text: #5a3f35;
+    --light-text: #9a7a6a;
+    --accent: #D0B448;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +26,7 @@
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: #faf9f7;
+    background: var(--cream);
     color: var(--dark-text);
     min-height: 100vh;
     overflow-x: hidden;
@@ -143,17 +143,6 @@
   }
   .section.active { display: flex; }
 
-  /* Frosted overlay for subpages — covers the animated canvas */
-  .section:not(#home)::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background: rgba(248, 246, 242, 0.82);
-    backdrop-filter: blur(28px) saturate(1.1);
-    -webkit-backdrop-filter: blur(28px) saturate(1.1);
-  }
-
   /* ── HOME ── */
   #home {
     flex-direction: column;
@@ -189,6 +178,7 @@
 
   .home-title em {
     font-style: italic;
+    color: var(--dark-text);
   }
 
   .home-subtitle {
@@ -781,61 +771,24 @@
 </script>
 
 <script>
-// ── Three.js Ink Flow Background ──
+// ── Three.js Organic Warm Flow Background ──
 (function() {
   const canvas = document.getElementById('ink-canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
-
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-  // 3 blobs — each with its own elliptical orbit path for fluid, continuous motion
-  const INK_COUNT = 3;
-  const inkColors = [
-    [0.93, 0.76, 0.55], // warm peach-apricot  #edC28c
-    [0.88, 0.68, 0.46], // deeper amber-orange  #e0ad75
-    [0.95, 0.82, 0.64], // pale cream-orange    #f2d1a3
-  ];
-
-  // Each blob follows a slow elliptical lissajous path — feels organic, never stops
-  const blobs = [
-    {
-      // top-left area, large
-      cx: 0.22, cy: 0.72,   // orbit center
-      rx: 0.14, ry: 0.10,   // orbit radius x/y
-      freq: 0.09, phase: 0.0,
-      x: 0.22, y: 0.72,
-      color: inkColors[0],
-      size: 0.52,
-    },
-    {
-      // right-center area
-      cx: 0.80, cy: 0.48,
-      rx: 0.10, ry: 0.16,
-      freq: 0.07, phase: 2.1,
-      x: 0.80, y: 0.48,
-      color: inkColors[1],
-      size: 0.46,
-    },
-    {
-      // bottom-left area
-      cx: 0.28, cy: 0.20,
-      rx: 0.12, ry: 0.08,
-      freq: 0.11, phase: 4.2,
-      x: 0.28, y: 0.20,
-      color: inkColors[2],
-      size: 0.40,
-    },
-  ];
+  let mouseNX = -5, mouseNY = -5;
+  document.addEventListener('mousemove', e => {
+    mouseNX = e.clientX / window.innerWidth;
+    mouseNY = 1.0 - e.clientY / window.innerHeight;
+  });
 
   const vertSrc = `
     varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = vec4(position, 1.0);
-    }
+    void main() { vUv = uv; gl_Position = vec4(position, 1.0); }
   `;
 
   const fragSrc = `
@@ -843,100 +796,126 @@
     varying vec2 vUv;
     uniform float uTime;
     uniform vec2 uRes;
-
-    uniform vec4 uBlobs[3];
-    uniform vec3 uColors[3];
+    uniform vec2 uMouse;
 
     float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+      return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453);
     }
     float noise(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
-      vec2 u = f * f * (3.0 - 2.0 * f);
-      return mix(
-        mix(hash(i), hash(i + vec2(1,0)), u.x),
-        mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), u.x),
-        u.y
-      );
+      vec2 i=floor(p), f=fract(p), u=f*f*(3.0-2.0*f);
+      return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),
+                 mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);
     }
     float fbm(vec2 p) {
-      float v = 0.0, a = 0.5;
-      for (int i = 0; i < 4; i++) {
-        v += a * noise(p);
-        p *= 2.1; a *= 0.5;
-      }
+      float v=0.0, a=0.5; mat2 r=mat2(0.8,-0.6,0.6,0.8);
+      for(int i=0;i<4;i++){v+=a*noise(p);p=r*p*2.1;a*=0.5;}
       return v;
     }
 
     void main() {
-      vec2 aspect = vec2(uRes.x / uRes.y, 1.0);
-      vec2 uv = vUv;
+      float aspect = uRes.x / uRes.y;
+      vec2 uv = vec2(vUv.x * aspect, vUv.y);
 
-      vec3 base = vec3(0.990, 0.986, 0.980); // near-pure white #fcfbfa
+      // Warm cream background — same tone as Musical Hugs
+      vec3 bg = vec3(0.961, 0.945, 0.922);
 
-      vec3 col = base;
+      // Exact hex values as specified, full saturation
+      vec3 coral = vec3(0.765, 0.506, 0.443); // #C38171
+      vec3 cream = vec3(0.929, 0.855, 0.835); // #EDDAD5
+      vec3 gold  = vec3(0.816, 0.706, 0.282); // #D0B448
 
-      for (int i = 0; i < 3; i++) {
-        vec2 bPos = uBlobs[i].xy;
-        float bSize = uBlobs[i].z;
-        float bPhase = uBlobs[i].w;
+      float spd = uTime * 2.5;
 
-        vec2 distUv = uv * vec2(aspect.x, 1.0);
-        vec2 bPosAsp = bPos * vec2(aspect.x, 1.0);
+      // 4 blob centers, each in a quadrant, orbiting independently
+      vec2 anchors[4];
+      anchors[0] = vec2(0.25 * aspect, 0.73);
+      anchors[1] = vec2(0.78 * aspect, 0.70);
+      anchors[2] = vec2(0.20 * aspect, 0.27);
+      anchors[3] = vec2(0.80 * aspect, 0.25);
 
-        // Organic edge warp tied to time — makes the blob shape slowly morph
-        float noiseAmt = fbm(distUv * 1.4 + uTime * 0.02 + bPhase) * 0.10;
-        vec2 dir = normalize(distUv - bPosAsp + 0.001);
-        vec2 distorted = distUv + noiseAmt * dir;
+      vec2 freqs[4];
+      freqs[0] = vec2(0.31, 0.19);
+      freqs[1] = vec2(0.17, 0.37);
+      freqs[2] = vec2(0.29, 0.13);
+      freqs[3] = vec2(0.23, 0.41);
 
-        float dist = length(distorted - bPosAsp);
+      float phases[4];
+      phases[0] = 0.00;
+      phases[1] = 1.57;
+      phases[2] = 3.14;
+      phases[3] = 4.71;
 
-        // Slow breathing
-        float breathing = 1.0 + 0.04 * sin(uTime * 0.38 + bPhase);
-        float sz = bSize * breathing;
+      // Blend all blobs into a single color field
+      vec3 accumulated = vec3(0.0);
+      float totalW = 0.0;
 
-        // Pure wide gaussian — no hard core, all dreamy soft wash
-        // Inner slightly tighter for center warmth, outer for wide spread
-        float inner = exp(-dist * dist / (sz * sz * 0.55));
-        float outer = exp(-dist * dist / (sz * sz * 2.8));
+      for (int i = 0; i < 4; i++) {
+        vec2 center = anchors[i] + vec2(
+          0.32 * sin(spd * freqs[i].x + phases[i]),
+          0.28 * cos(spd * freqs[i].y + phases[i])
+        );
 
-        // Inner at 55% max, outer ambient at 20% — never harsh
-        float strength = inner * 0.52 + outer * 0.20;
-        strength = clamp(strength, 0.0, 0.68);
+        // Gentle organic shape
+        vec2 d = uv - center;
+        float angle = atan(d.y, d.x);
+        float distort = 1.0 + 0.10 * sin(angle * 2.0 + spd * 0.3 + float(i));
+        float dist = length(d) / max(distort, 0.5);
 
-        col = mix(col, uColors[i], strength);
+        float sz = 0.38 * aspect;
+        float t01 = clamp(dist / sz, 0.0, 1.0);
+
+        // Radial gradient: coral center → cream edge, gold as subtle warm tint only
+        vec3 gc = mix(coral, cream, smoothstep(0.0, 1.0, t01));
+        // Gold as a very faint warm nudge in the mid zone only
+        gc = mix(gc, mix(gc, gold, 0.18), smoothstep(0.3, 0.6, t01) * smoothstep(0.9, 0.6, t01));
+
+        // Weight: strong Gaussian-like falloff
+        float w = exp(-dist * dist / (sz * sz * 0.55));
+
+        accumulated += gc * w;
+        totalW += w;
       }
 
-      gl_FragColor = vec4(col, 1.0);
+      vec3 col = bg;
+      if (totalW > 0.001) {
+        vec3 blobColor = accumulated / totalW;
+        // High alpha so colors actually show up, like the reference
+        float a = clamp(totalW * 0.9, 0.0, 0.82);
+        col = mix(bg, blobColor, a);
+      }
+
+      // Mouse: very small soft brightening
+      if (uMouse.x > 0.0) {
+        vec2 m = vec2(uMouse.x * aspect, uMouse.y);
+        float md = length(uv - m);
+        float h = smoothstep(0.05, 0.0, md) * 0.5 + smoothstep(0.14, 0.0, md) * 0.1;
+        col = mix(col, bg * 1.01, clamp(h, 0.0, 0.7));
+      }
+
+      // Gentle vignette
+      float vig = length((vUv - 0.5) * 1.0);
+      col = mix(col, col * 0.93, smoothstep(0.45, 1.0, vig));
+
+      gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
     }
   `;
 
   const uniforms = {
-    uTime:   { value: 0 },
-    uRes:    { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-    uBlobs:  { value: blobs.map(b => new THREE.Vector4(b.x, b.y, b.size, b.phase || 0)) },
-    uColors: { value: blobs.map(b => new THREE.Vector3(...b.color)) },
+    uTime:  { value: 0 },
+    uRes:   { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+    uMouse: { value: new THREE.Vector2(-5, -5) },
   };
 
-  const mat  = new THREE.ShaderMaterial({ vertexShader: vertSrc, fragmentShader: fragSrc, uniforms });
-  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
-  scene.add(mesh);
+  const mat = new THREE.ShaderMaterial({ vertexShader: vertSrc, fragmentShader: fragSrc, uniforms });
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
 
+  let smx = -5, smy = -5;
   function animate(t) {
     requestAnimationFrame(animate);
-    const time = t * 0.001;
-    uniforms.uTime.value = time;
-
-    // Each blob smoothly orbits its center — continuous, flowing, never jittery
-    blobs.forEach((b, i) => {
-      const angle = time * b.freq + b.phase;
-      // Lissajous-style: x and y at slightly different frequencies for organic path
-      b.x = b.cx + Math.cos(angle) * b.rx;
-      b.y = b.cy + Math.sin(angle * 1.3 + b.phase) * b.ry;
-      uniforms.uBlobs.value[i].set(b.x, b.y, b.size, angle);
-    });
-
+    uniforms.uTime.value = t * 0.001;
+    smx += (mouseNX - smx) * 0.28;
+    smy += (mouseNY - smy) * 0.28;
+    uniforms.uMouse.value.set(smx, smy);
     renderer.render(scene, camera);
   }
   requestAnimationFrame(animate);
