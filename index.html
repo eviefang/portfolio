@@ -670,31 +670,499 @@
     border-top: 1px solid rgba(139,111,78,0.1);
   }
 
-  /* ── ABOUT ── */
+  /* ── ABOUT: 3D Card System ── */
   #about {
     flex-direction: column;
-    max-width: 700px;
+    max-width: 1000px;
     margin: 0 auto;
     width: 100%;
     justify-content: center;
   }
-  .about-text {
-    font-family: 'EB Garamond', serif;
-    font-size: 1.2rem;
-    font-weight: 300;
-    line-height: 1.9;
-    color: var(--mid-text);
-    margin-top: 32px;
-  }
-  .about-placeholder {
+
+  .about-cards-row {
+    display: flex;
+    gap: 24px;
     margin-top: 48px;
-    padding: 24px;
-    border: 1px dashed rgba(139,111,78,0.2);
-    border-radius: 8px;
-    font-size: 0.8rem;
-    color: var(--light-text);
+    perspective: 1200px;
+  }
+
+  .about-card-wrapper {
+    flex: 1;
+    height: 300px;
+    cursor: none;
+    perspective: 900px;
+  }
+
+  .about-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform-style: preserve-3d;
+  }
+
+  /* Hover tilt only when not flipped */
+  .about-card-wrapper:not(.flipped):hover .about-card-inner {
+    transform: rotateY(12deg) rotateX(-4deg) scale(1.03);
+  }
+
+  /* Flipped state */
+  .about-card-wrapper.flipped .about-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  /* Shared face styles */
+  .about-card-front,
+  .about-card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  /* Front face */
+  .about-card-front {
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.6);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.35s ease, background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .about-card-front::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(ellipse at center, rgba(195,129,113,0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .about-card-wrapper:not(.flipped):hover .about-card-front {
+    box-shadow: 0 25px 60px rgba(139,111,78,0.15), 0 8px 20px rgba(139,111,78,0.08);
+    background: rgba(255,255,255,0.55);
+    border-color: rgba(195,129,113,0.25);
+  }
+  .about-card-wrapper:not(.flipped):hover .about-card-front::before {
+    opacity: 1;
+  }
+
+  /* Back face */
+  .about-card-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, rgba(195,129,113,0.12) 0%, rgba(250,246,240,0.97) 40%, rgba(255,255,255,0.9) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(195,129,113,0.2);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: none;
+  }
+
+  .acb-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    color: var(--warm-brown);
+    margin-bottom: 10px;
+  }
+
+  .acb-title {
+    font-family: 'Playfair Display', serif;
     font-weight: 300;
-    letter-spacing: 0.06em;
+    font-size: 1.4rem;
+    color: var(--dark-text);
+    margin-bottom: 16px;
+  }
+
+  .acb-preview {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95rem;
+    color: var(--mid-text);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .acb-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--warm-brown);
+    margin-top: auto;
+    transition: transform 0.2s;
+  }
+  .about-card-wrapper.flipped:hover .acb-cta {
+    transform: translateX(4px);
+  }
+
+  .acf-icon {
+    color: var(--warm-brown);
+    opacity: 0.6;
+    margin-bottom: 24px;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .about-card-wrapper:not(.flipped):hover .acf-icon {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  .acf-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    color: var(--warm-brown);
+    margin-bottom: 10px;
+  }
+
+  .acf-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.55rem;
+    color: var(--dark-text);
+    line-height: 1.3;
+    transition: color 0.3s;
+  }
+  .about-card-wrapper:not(.flipped):hover .acf-title {
+    color: var(--warm-brown);
+  }
+
+  .acf-hint {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--light-text);
+    margin-top: auto;
+    padding-top: 24px;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .about-card-wrapper:not(.flipped):hover .acf-hint {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── About Expanded Overlay ── */
+  .about-expanded-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(42,31,26,0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .about-expanded-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .about-expanded-panel {
+    width: 92vw;
+    max-width: 860px;
+    max-height: 85vh;
+    background: linear-gradient(135deg, rgba(195,129,113,0.06) 0%, rgba(250,246,240,0.98) 30%, rgba(255,255,255,0.95) 100%);
+    border: 1px solid rgba(195,129,113,0.15);
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 120px rgba(42,31,26,0.25);
+    transform: scale(0.3) rotateY(30deg);
+    transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease;
+    opacity: 0;
+    transform-style: preserve-3d;
+  }
+  .about-expanded-overlay.open .about-expanded-panel {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+  }
+
+  .about-expanded-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(139,111,78,0.12);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    color: var(--mid-text);
+    transition: all 0.2s;
+  }
+  .about-expanded-close:hover {
+    background: rgba(255,255,255,0.9);
+    color: var(--dark-text);
+  }
+
+  .about-expanded-content {
+    padding: 48px 52px 56px;
+    overflow-y: auto;
+    max-height: 85vh;
+  }
+  .about-expanded-content::-webkit-scrollbar { width: 4px; }
+  .about-expanded-content::-webkit-scrollbar-thumb { background: rgba(139,111,78,0.15); border-radius: 2px; }
+
+  /* Expanded content typography */
+  .aec-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .aec-number {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    color: var(--warm-brown);
+  }
+  .aec-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    color: var(--dark-text);
+  }
+
+  .aec-body {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--mid-text);
+    line-height: 1.9;
+  }
+  .aec-body p {
+    margin-bottom: 18px;
+  }
+  .aec-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .aec-highlight {
+    padding: 18px 22px;
+    background: rgba(195,129,113,0.05);
+    border-left: 3px solid var(--warm-brown);
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+    font-style: italic;
+  }
+
+  .aec-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(139,111,78,0.2);
+    margin: 32px 0;
+  }
+
+  /* Hobby grid */
+  .hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 28px;
+  }
+
+  .hobby-item {
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 14px;
+    padding: 24px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s;
+    cursor: none;
+  }
+  .hobby-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(139,111,78,0.1);
+    background: rgba(255,255,255,0.7);
+  }
+
+  .hobby-icon {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+
+  .hobby-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.15rem;
+    color: var(--dark-text);
+    margin-bottom: 8px;
+  }
+
+  .hobby-desc {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.9rem;
+    color: var(--mid-text);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+
+  .hobby-evidence {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--light-text);
+    letter-spacing: 0.03em;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .hobby-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--warm-brown);
+    text-decoration: none;
+    cursor: none;
+    border: 1px solid rgba(195,129,113,0.3);
+    padding: 5px 14px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .hobby-link:hover {
+    background: var(--warm-brown);
+    color: #fff;
+    border-color: var(--warm-brown);
+  }
+
+  .hobby-link svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* Miquan scrollable long image */
+  .hobby-miquan-scroll {
+    width: 100%;
+    max-height: 180px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 10px;
+    border: 1px solid rgba(139,111,78,0.12);
+    margin-bottom: 8px;
+    background: #1a1a2e;
+  }
+  .hobby-miquan-scroll::-webkit-scrollbar { width: 3px; }
+  .hobby-miquan-scroll::-webkit-scrollbar-track { background: transparent; }
+  .hobby-miquan-scroll::-webkit-scrollbar-thumb { background: rgba(195,129,113,0.3); border-radius: 2px; }
+  .hobby-miquan-scroll img {
+    width: 100%;
+    display: block;
+  }
+
+  /* Polaroid strip */
+  .film-strip-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-radius: 4px;
+    margin-top: 24px;
+    position: relative;
+    cursor: grab;
+    -webkit-user-select: none;
+    user-select: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 12px 0 8px;
+  }
+  .film-strip-container::-webkit-scrollbar { display: none; }
+  .film-strip-container:active {
+    cursor: grabbing;
+  }
+
+  .film-strip {
+    display: flex;
+    gap: 22px;
+    width: max-content;
+    padding: 8px 4px 16px;
+  }
+
+  .film-frame {
+    flex-shrink: 0;
+    width: 180px;
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px 10px 32px;
+    box-shadow: 0 2px 12px rgba(42,31,26,0.08), 0 1px 3px rgba(42,31,26,0.06);
+    transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.35s ease;
+    cursor: none;
+    position: relative;
+  }
+  .film-frame:nth-child(odd) {
+    transform: rotate(-1.5deg);
+  }
+  .film-frame:nth-child(even) {
+    transform: rotate(1.2deg);
+  }
+  .film-frame:nth-child(3) {
+    transform: rotate(-0.5deg);
+  }
+  .film-frame:hover {
+    transform: rotate(0deg) translateY(-6px) scale(1.04);
+    box-shadow: 0 12px 32px rgba(42,31,26,0.14), 0 4px 8px rgba(42,31,26,0.08);
+    z-index: 2;
+  }
+
+  .film-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: rgba(195,129,113,0.06);
+    border: 1px dashed rgba(139,111,78,0.15);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    color: var(--light-text);
+    overflow: hidden;
+  }
+  .film-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .film-caption {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--mid-text);
+    text-align: center;
+    letter-spacing: 0.02em;
   }
 
   /* ── Resume Button ── */
@@ -1351,21 +1819,85 @@
 
   <!-- ABOUT -->
   <section class="section" id="about">
-    <div>
+    <div style="width:100%">
       <div class="section-header fade-in">
         <div class="section-label">About</div>
         <h2 class="section-title">关于我</h2>
       </div>
-      <p class="about-text fade-in">
-        我叫方竹伊，有国内数据科学本科与帝国理工硕士背景，<br>
-        对 AI 产品有持续的关注与动手习惯——<br>
-        我喜欢把想法做成可以体验的东西。
-      </p>
-      <div class="about-placeholder fade-in">
-        兴趣爱好板块 · 即将上线
+
+      <div class="about-cards-row">
+        <!-- Card 1: Why Product -->
+        <div class="about-card-wrapper fade-in" onclick="flipAboutCard(this, 0)">
+          <div class="about-card-inner" id="aboutCard0">
+            <div class="about-card-front">
+              <div class="acf-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              </div>
+              <div class="acf-label">01</div>
+              <div class="acf-title">为什么做产品？</div>
+              <div class="acf-hint">点击翻转 →</div>
+            </div>
+            <div class="about-card-back">
+              <div class="acb-label">01</div>
+              <div class="acb-title">为什么做产品？</div>
+              <div class="acb-preview">AI 让我长出了手脚，而我天然有用户体验的直觉…</div>
+              <div class="acb-cta">点击展开全部 →</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: My World -->
+        <div class="about-card-wrapper fade-in" onclick="flipAboutCard(this, 1)">
+          <div class="about-card-inner" id="aboutCard1">
+            <div class="about-card-front">
+              <div class="acf-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              </div>
+              <div class="acf-label">02</div>
+              <div class="acf-title">我的世界</div>
+              <div class="acf-hint">点击翻转 →</div>
+            </div>
+            <div class="about-card-back">
+              <div class="acb-label">02</div>
+              <div class="acb-title">我的世界</div>
+              <div class="acb-preview">🎤 唱歌 · 💃 跳舞 · 🔍 剧本杀 · 🧠 推理博弈</div>
+              <div class="acb-cta">点击展开全部 →</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Freedom -->
+        <div class="about-card-wrapper fade-in" onclick="flipAboutCard(this, 2)">
+          <div class="about-card-inner" id="aboutCard2">
+            <div class="about-card-front">
+              <div class="acf-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+              </div>
+              <div class="acf-label">03</div>
+              <div class="acf-title">自由与无限可能</div>
+              <div class="acf-hint">点击翻转 →</div>
+            </div>
+            <div class="about-card-back">
+              <div class="acb-label">03</div>
+              <div class="acb-title">自由与无限可能</div>
+              <div class="acb-preview">我相信人生不应该被预设的路径限制。</div>
+              <div class="acb-cta">点击展开全部 →</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- About Card Expanded Overlay -->
+  <div class="about-expanded-overlay" id="aboutExpandedOverlay" onclick="closeAboutCard(event)">
+    <div class="about-expanded-panel" id="aboutExpandedPanel">
+      <button class="about-expanded-close" onclick="closeAboutCard()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="about-expanded-content" id="aboutExpandedContent"></div>
+    </div>
+  </div>
 </div>
 
 <!-- Page Navigation Arrows -->
@@ -1444,7 +1976,7 @@
   }
   animateRing();
 
-  document.querySelectorAll('a, button, .timeline-item, .card, .analysis-item, .home-title, .resume-btn, .resume-close, .resume-download, .side-nav-item').forEach(el => {
+  document.querySelectorAll('a, button, .timeline-item, .card, .analysis-item, .home-title, .resume-btn, .resume-close, .resume-download, .side-nav-item, .about-card-wrapper, .hobby-item, .about-expanded-close').forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.style.width = '14px';
       cursor.style.height = '14px';
@@ -1687,6 +2219,250 @@
       el.querySelector('.analysis-toggle').textContent = '收起 ↑';
     }
   }
+
+  // ── About Card: Two-stage flip → expand ──
+  const aboutCardData = {
+    0: {
+      number: '01',
+      title: '为什么做产品？',
+      content: `
+        <div class="aec-body">
+          <p>AI 的发展，让不够专精于代码的人长出了手脚。</p>
+          <p>而我恰好是执行能力与思考能力的混合物——我有技术背景，可以深入思考产品逻辑，也能快速把想法做成可体验的 demo。能力也许不算极强，但和技术团队沟通一定很顺畅。</p>
+          <div class="aec-highlight">
+            这个网站，就是我和 AI 一起从零搭建的。
+          </div>
+          <div class="aec-divider"></div>
+          <p>另外，我有一种天然的用户体验视角。</p>
+          <p>我的大众点评等级是 Lv6、接近 Lv7，全部都是我自己一个字一个字写的真实评价。去一家店，我总能看到好的点和不好的点——哪些细节让人舒服，哪些环节让人皱眉。</p>
+          <p>说实话，最初的动力是想抽霸王餐。但写着写着，这件事本身变成了一种习惯——我在持续练习「站在用户视角给反馈」这件事，只是当时没意识到。</p>
+          <div class="aec-highlight">
+            从「想抽霸王餐」到「Lv6 的用户洞察肌肉记忆」——<br>好的产品直觉，有时候就是这么长出来的。
+          </div>
+        </div>
+      `
+    },
+    1: {
+      number: '02',
+      title: '我的世界',
+      content: `
+        <div class="aec-body">
+          <p>工作之外，这些是让我充电的事情。</p>
+          <div class="hobby-grid">
+            <div class="hobby-item">
+              <div class="hobby-icon">🎤</div>
+              <div class="hobby-name">唱歌</div>
+              <div class="hobby-desc">用抖音记录日常翻唱，唱歌是我最直接的情绪出口。</div>
+              <a class="hobby-link" href="https://v.douyin.com/2GXieWH8qqk/" target="_blank">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                抖音 ↗
+              </a>
+            </div>
+            <div class="hobby-item">
+              <div class="hobby-icon">💃</div>
+              <div class="hobby-name">跳舞</div>
+              <div class="hobby-desc">Instagram story 合集里记录了我学舞的片段。</div>
+              <a class="hobby-link" href="https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MDgyNzQ4NTMwODQxODA0?igsh=MTc0OXcwNm5odWw5cA==" target="_blank">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Instagram ↗
+              </a>
+            </div>
+            <div class="hobby-item">
+              <div class="hobby-icon">🔍</div>
+              <div class="hobby-name">剧本杀</div>
+              <div class="hobby-desc">谜圈记录已超过 100 本，推理和角色扮演是我的长期爱好。</div>
+              <div class="hobby-miquan-scroll"><img src="miquan.jpg" alt="谜圈打本记录" /></div>
+            </div>
+            <div class="hobby-item">
+              <div class="hobby-icon">🧠</div>
+              <div class="hobby-name">推理博弈节目</div>
+              <div class="hobby-desc">看了大量推理综艺和博弈节目，在小红书写了很多节目复盘笔记。</div>
+              <a class="hobby-link" href="https://xhslink.com/m/2pi2sh83iBg" target="_blank">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                小红书 ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      `
+    },
+    2: {
+      number: '03',
+      title: '自由与无限可能',
+      content: `
+        <div class="aec-body">
+          <div class="aec-highlight">
+            我相信人生不应该被预设的路径限制。<br>
+            每一次出发，都是在证明世界比想象中更大。
+          </div>
+          <p>我喜欢自由，喜欢探索未知的地方和未知的自己。旅行对我来说不只是换个地方待着——它是一种打开视角的方式。每到一个陌生的城市，我都会重新观察人们怎么生活、怎么解决问题、怎么找到自己的节奏。</p>
+          <p>这种好奇心也渗透进了我做产品的方式：永远不预设答案，永远对「还有没有别的可能」保持兴趣。</p>
+          <div class="aec-divider"></div>
+          <p style="font-size:0.88rem; color:var(--light-text); margin-bottom: 4px;">一些路上的瞬间 ——</p>
+          <div class="film-strip-container">
+            <div class="film-strip" id="filmStrip">
+              <div class="film-frame">
+                <div class="film-photo"><img src="travel-iceland.jpg" alt="Iceland" /></div>
+                <div class="film-caption">Iceland</div>
+              </div>
+              <div class="film-frame">
+                <div class="film-photo"><img src="travel-menton.jpg" alt="Menton" /></div>
+                <div class="film-caption">Menton</div>
+              </div>
+              <div class="film-frame">
+                <div class="film-photo"><img src="travel-florence.jpg" alt="Florence" /></div>
+                <div class="film-caption">Florence</div>
+              </div>
+              <div class="film-frame">
+                <div class="film-photo"><img src="travel-england.jpg" alt="England" /></div>
+                <div class="film-caption">England</div>
+              </div>
+              <div class="film-frame">
+                <div class="film-photo"><img src="travel-vienna.jpg" alt="Vienna" /></div>
+                <div class="film-caption">Vienna</div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:0.65rem; color:var(--light-text); margin-top:8px; letter-spacing:0.06em; opacity:0.5;">← 拖动浏览 →</p>
+        </div>
+      `
+    }
+  };
+
+  let aboutFlipState = {}; // track which cards are flipped
+  let aboutAnimating = false;
+
+  function flipAboutCard(wrapper, index) {
+    if (aboutAnimating) return;
+
+    const isFlipped = wrapper.classList.contains('flipped');
+
+    if (!isFlipped) {
+      // Stage 1: Flip to back
+      aboutAnimating = true;
+      SFX.sectionSwitch();
+      wrapper.classList.add('flipped');
+      aboutFlipState[index] = true;
+
+      aboutAnimating = false;
+      // Now user can click the back to expand
+    } else {
+      // Stage 2: Back is showing → expand into panel
+      openAboutPanel(index, wrapper);
+    }
+  }
+
+  function openAboutPanel(index, wrapper) {
+    const data = aboutCardData[index];
+    if (!data) return;
+
+    aboutAnimating = true;
+    SFX.sectionSwitch();
+
+    // Set content
+    const content = document.getElementById('aboutExpandedContent');
+    content.innerHTML = `
+      <div class="aec-header">
+        <span class="aec-number">${data.number}</span>
+        <span class="aec-title">${data.title}</span>
+      </div>
+      ${data.content}
+    `;
+
+    // Position the panel's transform-origin near the card
+    const rect = wrapper.getBoundingClientRect();
+    const panel = document.getElementById('aboutExpandedPanel');
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const originX = ((rect.left + rect.width / 2) / vw * 100).toFixed(1);
+    const originY = ((rect.top + rect.height / 2) / vh * 100).toFixed(1);
+    panel.style.transformOrigin = `${originX}% ${originY}%`;
+
+    // Open overlay
+    const overlay = document.getElementById('aboutExpandedOverlay');
+    overlay.classList.add('open');
+
+    setTimeout(() => { aboutAnimating = false; }, 600);
+  }
+
+  function closeAboutCard(event) {
+    if (event && event.target !== event.currentTarget && !event.target.closest('.about-expanded-close')) return;
+    const overlay = document.getElementById('aboutExpandedOverlay');
+    overlay.classList.remove('open');
+
+    // Flip all cards back to front after panel closes
+    setTimeout(() => {
+      document.querySelectorAll('.about-card-wrapper.flipped').forEach(w => {
+        w.classList.remove('flipped');
+      });
+      aboutFlipState = {};
+    }, 400);
+  }
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const overlay = document.getElementById('aboutExpandedOverlay');
+      if (overlay.classList.contains('open')) {
+        closeAboutCard();
+      } else {
+        // If a card is flipped but panel not open, flip it back
+        document.querySelectorAll('.about-card-wrapper.flipped').forEach(w => {
+          w.classList.remove('flipped');
+        });
+        aboutFlipState = {};
+      }
+    }
+  });
+
+  // ── Film Strip Drag-to-scroll ──
+  // Uses MutationObserver since the film strip is dynamically injected
+  const filmObserver = new MutationObserver(() => {
+    const container = document.querySelector('.film-strip-container');
+    if (!container || container.dataset.dragInit) return;
+    container.dataset.dragInit = 'true';
+
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    container.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.pageX;
+      scrollLeft = container.scrollLeft;
+      container.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const dx = e.pageX - startX;
+      container.scrollLeft = scrollLeft - dx;
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        container.style.cursor = 'grab';
+      }
+    });
+
+    // Touch support
+    container.addEventListener('touchstart', e => {
+      isDragging = true;
+      startX = e.touches[0].pageX;
+      scrollLeft = container.scrollLeft;
+    }, { passive: true });
+
+    container.addEventListener('touchmove', e => {
+      if (!isDragging) return;
+      const dx = e.touches[0].pageX - startX;
+      container.scrollLeft = scrollLeft - dx;
+    }, { passive: true });
+
+    container.addEventListener('touchend', () => { isDragging = false; });
+  });
+  filmObserver.observe(document.body, { childList: true, subtree: true });
 
   // ── Fade-in on scroll ──
   function triggerFadeIn() {
