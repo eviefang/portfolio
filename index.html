@@ -670,6 +670,43 @@
     padding-top: 20px;
     border-top: 1px solid rgba(139,111,78,0.1);
   }
+  .ab-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.85rem;
+    font-weight: 300;
+  }
+  .ab-section th,
+  .ab-section td {
+    padding: 10px 14px;
+    text-align: left;
+    line-height: 1.7;
+    color: var(--mid-text);
+    border-bottom: 1px solid rgba(139,111,78,0.08);
+    vertical-align: top;
+  }
+  .ab-section th {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    color: var(--dark-text);
+    border-bottom: 1px solid rgba(139,111,78,0.25);
+  }
+  .ab-section ul,
+  .ab-section ol {
+    margin: 10px 0 14px 22px;
+  }
+  .ab-section li {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--mid-text);
+    line-height: 1.8;
+    margin-bottom: 6px;
+  }
+  .ab-section li strong {
+    font-weight: 400;
+    color: var(--dark-text);
+  }
 
   /* ── ABOUT: 3D Card System ── */
   #about {
@@ -1708,6 +1745,19 @@
             <div class="analysis-left">
               <span class="analysis-tag">AI Agent</span>
               <span class="analysis-title">AI Agent 赛道的困局：当大模型本身就够用了</span>
+            </div>
+            <span class="analysis-toggle">展开 ↓</span>
+          </div>
+          <div class="analysis-body">
+            <div class="analysis-content"></div>
+          </div>
+        </div>
+
+        <div class="analysis-entry fade-in" data-article="claude-concepts.md" onclick="toggleAnalysis(this)">
+          <div class="analysis-header">
+            <div class="analysis-left">
+              <span class="analysis-tag">学习笔记</span>
+              <span class="analysis-title">用 Claude 的新语言，重新读懂我做过的事</span>
             </div>
             <span class="analysis-toggle">展开 ↓</span>
           </div>
