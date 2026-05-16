@@ -48,7 +48,7 @@ function FloatingCard({
         top: layout.top,
         left: layout.left,
         aspectRatio: '1/1',
-        zIndex: layout.z,
+        zIndex: hover ? 100 : layout.z,
         transformStyle: 'preserve-3d',
       }}
       initial={{
@@ -98,12 +98,6 @@ function FloatingCard({
                     alt={photo.caption}
                     className="w-full h-full object-cover"
                     draggable={false}
-                  />
-                  <motion.div
-                    className="absolute inset-0 mix-blend-overlay pointer-events-none"
-                    animate={{ opacity: hover ? 0.35 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{ backgroundColor: photo.color }}
                   />
                   <div className="absolute bottom-3 left-3 text-[10px] font-semibold tracking-[0.2em] text-white drop-shadow uppercase">
                     {photo.caption}
