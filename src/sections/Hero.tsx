@@ -10,16 +10,24 @@ import { travelPhotos, TravelPhoto } from '../data/travel';
 
 const HERO_SCALE = 0.82;
 
-// Scattered positions for the 8 photo cards (left, top in %)
+// Scattered positions tuned so each card's face area (upper portion of the
+// portrait photo) stays visible. Cards are spread horizontally and staggered
+// vertically; lower bands sit behind the upper ones via lower z.
 const LAYOUT = [
-  { left: '38%', top: '70%', z: 32 },
-  { left: '18%', top: '68%', z: 35 },
-  { left: '72%', top: '70%', z: 30 },
-  { left: '57%', top: '67%', z: 25 },
-  { left: '6%', top: '74%', z: 37 },
-  { left: '88%', top: '64%', z: 36 },
-  { left: '-6%', top: '80%', z: 20 },
-  { left: '80%', top: '82%', z: 18 },
+  // index 0 — iceland, the visual anchor in the center
+  { left: '38%', top: '52%', z: 38 },
+  // index 1 — menton, top-left arc
+  { left: '18%', top: '58%', z: 34 },
+  // index 2 — florence, top-right
+  { left: '58%', top: '58%', z: 34 },
+  // index 3 — england, far right
+  { left: '76%', top: '50%', z: 30 },
+  // index 4 — vienna, far left
+  { left: '2%', top: '56%', z: 28 },
+  // placeholders form the back row, lower and behind
+  { left: '46%', top: '78%', z: 18 },
+  { left: '-6%', top: '76%', z: 14 },
+  { left: '86%', top: '76%', z: 14 },
 ];
 
 const CARD_W = 'w-[180px] md:w-[240px] lg:w-[280px]';
@@ -45,10 +53,9 @@ function FloatingCard({
       style={{
         top: layout.top,
         left: layout.left,
-        aspectRatio: '1/1',
-        zIndex: hover ? 100 : layout.z,
+        aspectRatio: `${photo.ratio}`,
+        zIndex: layout.z,
         transformStyle: 'preserve-3d',
-        clipPath: 'inset(0 round 2rem)',
       }}
       initial={{
         opacity: 0,
