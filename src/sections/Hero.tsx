@@ -10,24 +10,25 @@ import { travelPhotos, TravelPhoto } from '../data/travel';
 
 const HERO_SCALE = 0.82;
 
-// Scattered positions tuned so each card's face area (upper portion of the
-// portrait photo) stays visible. Cards are spread horizontally and staggered
-// vertically; lower bands sit behind the upper ones via lower z.
+// Slot positions match the visual order documented in data/travel.ts.
+// Front row spans left → right; back row sits lower and behind via low z.
 const LAYOUT = [
-  // index 0 — iceland, the visual anchor in the center
-  { left: '38%', top: '52%', z: 38 },
-  // index 1 — menton, top-left arc
-  { left: '18%', top: '58%', z: 34 },
-  // index 2 — florence, top-right
-  { left: '58%', top: '58%', z: 34 },
-  // index 3 — england, far right
-  { left: '76%', top: '50%', z: 30 },
-  // index 4 — vienna, far left
-  { left: '2%', top: '56%', z: 28 },
-  // placeholders form the back row, lower and behind
-  { left: '46%', top: '78%', z: 18 },
-  { left: '-6%', top: '76%', z: 14 },
-  { left: '86%', top: '76%', z: 14 },
+  // 1 — front, far left
+  { left: '2%',  top: '62%', z: 28 },
+  // 2 — front, left-mid
+  { left: '20%', top: '66%', z: 32 },
+  // 3 — front, CENTER (anchor, slightly higher to feel hero)
+  { left: '40%', top: '58%', z: 38 },
+  // 4 — front, right-mid
+  { left: '60%', top: '66%', z: 32 },
+  // 5 — front, far right
+  { left: '78%', top: '60%', z: 28 },
+  // 6 — back, far left
+  { left: '-6%', top: '82%', z: 14 },
+  // 7 — back, center
+  { left: '46%', top: '84%', z: 16 },
+  // 8 — back, far right
+  { left: '86%', top: '82%', z: 14 },
 ];
 
 const CARD_W = 'w-[180px] md:w-[240px] lg:w-[280px]';
@@ -143,7 +144,7 @@ function HeroTitle() {
     >
       <motion.h1
         className="font-albert font-black text-[11vw] md:text-[9vw] leading-none tracking-tighter whitespace-nowrap skew-display origin-right relative z-20"
-        animate={{ x: hovered ? '-18%' : '0%', color: hovered ? '#E0221E' : '#000' }}
+        animate={{ x: hovered ? '-18%' : '0%' }}
         transition={{ type: 'spring', stiffness: 150, damping: 16 }}
       >
         FANG
@@ -176,7 +177,7 @@ function HeroTitle() {
 
       <motion.h1
         className="font-albert font-black text-[11vw] md:text-[9vw] leading-none tracking-tighter whitespace-nowrap skew-display origin-left relative z-20 ml-[2vw]"
-        animate={{ x: hovered ? '18%' : '0%', color: hovered ? '#E0221E' : '#000' }}
+        animate={{ x: hovered ? '18%' : '0%' }}
         transition={{ type: 'spring', stiffness: 150, damping: 16 }}
       >
         ZHUYI
