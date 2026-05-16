@@ -69,8 +69,8 @@ function FloatingCard({
     >
       <motion.div
         animate={{
-          y: hover ? -50 : [0, -bobOffset, 0],
-          scale: hover ? photo.scale * 1.1 : photo.scale,
+          y: hover ? 0 : [0, -bobOffset, 0],
+          scale: hover ? photo.scale * 1.06 : photo.scale,
           rotate: hover ? photo.rotate + hoverTilt : photo.rotate,
         }}
         transition={{
@@ -80,10 +80,10 @@ function FloatingCard({
             repeatType: 'mirror',
             ease: 'easeInOut',
           },
-          scale: { type: 'spring', stiffness: 200, damping: 15 },
+          scale: { type: 'spring', stiffness: 200, damping: 18 },
           rotate: { type: 'spring', stiffness: 150, damping: 20 },
         }}
-        className="w-full h-full origin-bottom"
+        className="w-full h-full origin-center"
       >
         <Magnetic strength={30}>
           <div
