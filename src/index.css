@@ -103,3 +103,12 @@
   text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
 }
+
+/* Blinking cursor for the hero terminal */
+@keyframes terminal-cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.terminal-cursor {
+  animation: terminal-cursor-blink 1s steps(1) infinite;
+}

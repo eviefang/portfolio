@@ -7,6 +7,7 @@ import {
   useScroll,
 } from 'framer-motion';
 import { travelPhotos, TravelPhoto } from '../data/travel';
+import Terminal from '../components/Terminal';
 
 const HERO_SCALE = 0.82;
 
@@ -103,7 +104,9 @@ function FloatingCard({
           }}
         >
             <div className="w-full h-full rounded-[1.6rem] overflow-hidden relative bg-neutral-100">
-              {photo.img ? (
+              {photo.kind === 'terminal' ? (
+                <Terminal />
+              ) : photo.img ? (
                 <>
                   <img
                     src={photo.img}
