@@ -6,7 +6,6 @@ import {
   useSpring,
   useScroll,
 } from 'framer-motion';
-import Magnetic from '../components/Magnetic';
 import { travelPhotos, TravelPhoto } from '../data/travel';
 
 const HERO_SCALE = 0.82;
@@ -39,7 +38,6 @@ function FloatingCard({
 
   const bobDuration = useMemo(() => 3 + Math.random() * 2, []);
   const bobOffset = useMemo(() => 5 + Math.random() * 6, []);
-  const hoverTilt = useMemo(() => Math.random() * 8 - 4, []);
 
   return (
     <motion.div
@@ -70,8 +68,8 @@ function FloatingCard({
       <motion.div
         animate={{
           y: hover ? 0 : [0, -bobOffset, 0],
-          scale: hover ? photo.scale * 1.06 : photo.scale,
-          rotate: hover ? photo.rotate + hoverTilt : photo.rotate,
+          scale: photo.scale,
+          rotate: photo.rotate,
         }}
         transition={{
           y: {
@@ -85,11 +83,15 @@ function FloatingCard({
         }}
         className="w-full h-full origin-center"
       >
-        <Magnetic strength={30}>
-          <div
-            className="w-full h-full rounded-[2rem] bg-white p-2 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.18)] relative"
-            style={{ border: `1px solid rgba(0,0,0,0.06)` }}
-          >
+        <div
+          className="w-full h-full rounded-[2rem] bg-white p-2 relative transition-shadow duration-300"
+          style={{
+            border: `1px solid rgba(0,0,0,0.06)`,
+            boxShadow: hover
+              ? '0 35px 70px -15px rgba(0,0,0,0.35)'
+              : '0 25px 50px -12px rgba(0,0,0,0.18)',
+          }}
+        >
             <div className="w-full h-full rounded-[1.6rem] overflow-hidden relative bg-neutral-100">
               {photo.img ? (
                 <>
@@ -116,7 +118,6 @@ function FloatingCard({
               )}
             </div>
           </div>
-        </Magnetic>
       </motion.div>
     </motion.div>
   );
