@@ -48,13 +48,19 @@ function FloatingCard({
         aspectRatio: '1/1',
         zIndex: hover ? 100 : layout.z,
         transformStyle: 'preserve-3d',
+        clipPath: 'inset(0 round 2rem)',
       }}
       initial={{
         opacity: 0,
         y: 1000 + Math.random() * 400,
         rotate: photo.rotate + (Math.random() * 30 - 15),
+        scale: photo.scale,
       }}
-      animate={entered ? { opacity: 1, y: 0, rotate: photo.rotate } : {}}
+      animate={
+        entered
+          ? { opacity: 1, y: 0, rotate: photo.rotate, scale: photo.scale }
+          : {}
+      }
       transition={{
         duration: 1.4,
         delay: 0.15 + Math.random() * 0.5,
@@ -67,19 +73,15 @@ function FloatingCard({
     >
       <motion.div
         animate={{
-          y: hover ? 0 : [0, -bobOffset, 0],
-          scale: photo.scale,
-          rotate: photo.rotate,
+          y: [0, -bobOffset, 0],
         }}
         transition={{
           y: {
-            duration: hover ? 0.3 : bobDuration,
-            repeat: hover ? 0 : Infinity,
+            duration: bobDuration,
+            repeat: Infinity,
             repeatType: 'mirror',
             ease: 'easeInOut',
           },
-          scale: { type: 'spring', stiffness: 200, damping: 18 },
-          rotate: { type: 'spring', stiffness: 150, damping: 20 },
         }}
         className="w-full h-full origin-center"
       >
