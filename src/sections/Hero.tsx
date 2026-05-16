@@ -14,21 +14,21 @@ const HERO_SCALE = 0.82;
 // Front row spans left → right; back row sits lower and behind via low z.
 const LAYOUT = [
   // 1 — front, far left
-  { left: '2%',  top: '62%', z: 28 },
+  { left: '12%', top: '62%', z: 28 },
   // 2 — front, left-mid
-  { left: '20%', top: '66%', z: 32 },
+  { left: '26%', top: '66%', z: 32 },
   // 3 — front, CENTER (anchor, slightly higher to feel hero)
   { left: '40%', top: '58%', z: 38 },
   // 4 — front, right-mid
   { left: '60%', top: '66%', z: 32 },
   // 5 — front, far right
   { left: '78%', top: '60%', z: 28 },
-  // 6 — back, far left
-  { left: '-6%', top: '82%', z: 14 },
-  // 7 — back, center
-  { left: '46%', top: '84%', z: 16 },
-  // 8 — back, far right
-  { left: '86%', top: '82%', z: 14 },
+  // 6 — back, far left (pokes out further left)
+  { left: '-12%', top: '82%', z: 14 },
+  // 7 — back, center (pulled lower)
+  { left: '46%', top: '92%', z: 16 },
+  // 8 — back, far right (pokes out further right)
+  { left: '89%', top: '82%', z: 14 },
 ];
 
 const CARD_W = 'w-[180px] md:w-[240px] lg:w-[280px]';
