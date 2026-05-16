@@ -23,8 +23,8 @@ const LAYOUT = [
   { left: '60%', top: '66%', z: 32 },
   // 5 — front, far right
   { left: '78%', top: '60%', z: 28 },
-  // 6 — back, far left (pokes out further left)
-  { left: '-12%', top: '82%', z: 14 },
+  // 6 — back, far left (pokes out further left, mirrors slot 8)
+  { left: '-3%', top: '82%', z: 14 },
   // 7 — back, center (pulled lower)
   { left: '46%', top: '92%', z: 16 },
   // 8 — back, far right (pokes out further right)
