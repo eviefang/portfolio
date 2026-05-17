@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReactNode, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface ModalProps {
   open: boolean;
@@ -23,7 +24,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
     };
   }, [open, onClose]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -63,6 +64,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { timeline } from '../data/timeline';
 import Modal from '../components/Modal';
+import ResumeViewer from '../components/ResumeViewer';
 
 export default function AboutMe() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -62,15 +63,7 @@ export default function AboutMe() {
               </svg>
             </button>
 
-            <Modal open={resumeOpen} onClose={() => setResumeOpen(false)} title="简历 · Resume" maxWidth="max-w-4xl">
-              <div className="h-[75vh]">
-                <iframe
-                  src="/assets/resume.pdf"
-                  className="w-full h-full rounded-xl border border-black/10"
-                  title="Resume PDF"
-                />
-              </div>
-            </Modal>
+            <ResumeViewer open={resumeOpen} onClose={() => setResumeOpen(false)} />
           </motion.div>
         </div>
 
