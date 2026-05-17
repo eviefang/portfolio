@@ -68,15 +68,15 @@ export default function Terminal() {
   }, []);
 
   return (
-    <div className="w-full h-full bg-[#0d1117] rounded-[1.6rem] overflow-hidden flex flex-col text-white font-mono">
+    <div className="w-full h-full bg-white/55 backdrop-blur-2xl backdrop-saturate-150 rounded-[1.4rem] overflow-hidden flex flex-col text-neutral-900 font-mono border border-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
       {/* Mac chrome */}
-      <div className="flex items-center px-3 py-2 border-b border-white/[0.07] bg-[#161b22]">
+      <div className="flex items-center px-3 py-2 border-b border-black/[0.06] bg-white/40">
         <div className="flex items-center gap-[5px]">
           <span className="w-[10px] h-[10px] rounded-full bg-[#FF5F57]" />
           <span className="w-[10px] h-[10px] rounded-full bg-[#FEBC2E]" />
           <span className="w-[10px] h-[10px] rounded-full bg-[#28C840]" />
         </div>
-        <div className="flex-1 text-center text-[10px] text-white/40 tracking-[0.05em]">
+        <div className="flex-1 text-center text-[10px] text-neutral-500 tracking-[0.05em]">
           ~/evie — zsh
         </div>
         <div className="w-[42px]" />
@@ -98,10 +98,10 @@ export default function Terminal() {
 function Line({ text, cursor }: { text: string; cursor?: boolean }) {
   return (
     <div className="flex items-baseline gap-2">
-      <span className="text-emerald-400 select-none">$</span>
-      <span className="text-white/95">{text}</span>
+      <span className="text-emerald-600 select-none">$</span>
+      <span className="text-neutral-900">{text}</span>
       {cursor && (
-        <span className="terminal-cursor inline-block w-[0.5em] h-[1.05em] bg-white/95 translate-y-[0.16em]" />
+        <span className="terminal-cursor inline-block w-[0.5em] h-[1.05em] bg-neutral-900 translate-y-[0.16em]" />
       )}
     </div>
   );
