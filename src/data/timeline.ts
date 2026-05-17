@@ -29,7 +29,7 @@ export const timeline: TimelineItem[] = [
     org: 'Recraft AI · 伦敦',
     detail:
       '在 AI 设计工具 Recraft AI 担任产品设计实习生，参与产品功能迭代与用户体验优化，积累了 AI 工具类产品的一线经验。',
-    tags: ['AIGC产品', '数据驱动增长'],
+    tags: ['AIGC', 'Growth'],
   },
   {
     year: '2024',
