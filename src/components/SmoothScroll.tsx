@@ -16,6 +16,12 @@ export default function SmoothScroll() {
     };
     raf = requestAnimationFrame(tick);
 
+    // Pause Lenis when a modal is open so wheel events don't bleed through
+    const onModalOpen = () => lenis.stop();
+    const onModalClose = () => lenis.start();
+    document.addEventListener('modal-open', onModalOpen);
+    document.addEventListener('modal-close', onModalClose);
+
     // Hook anchor links into Lenis
     const onClick = (e: Event) => {
       const a = (e.target as HTMLElement).closest('a');
@@ -34,6 +40,8 @@ export default function SmoothScroll() {
       cancelAnimationFrame(raf);
       lenis.destroy();
       document.removeEventListener('click', onClick);
+      document.removeEventListener('modal-open', onModalOpen);
+      document.removeEventListener('modal-close', onModalClose);
     };
   }, []);
 

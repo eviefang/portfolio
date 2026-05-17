@@ -15,9 +15,11 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    document.dispatchEvent(new CustomEvent('modal-open'));
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      document.dispatchEvent(new CustomEvent('modal-close'));
     };
   }, [open, onClose]);
 
@@ -29,7 +31,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 md:px-8 pt-20 md:pt-24 pb-4 md:pb-8"
           onClick={onClose}
         >
           <motion.div
@@ -38,7 +40,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
             exit={{ scale: 0.96, y: 10, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
-            className={`relative bg-white rounded-3xl border-2 border-black w-full ${maxWidth} max-h-[90vh] overflow-hidden flex flex-col shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)]`}
+            className={`relative bg-white rounded-3xl border-2 border-black w-full ${maxWidth} max-h-full overflow-hidden flex flex-col shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)]`}
           >
             {title && (
               <div className="flex items-center justify-between px-6 md:px-8 py-5 border-b-2 border-black/10">
