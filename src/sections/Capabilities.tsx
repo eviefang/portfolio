@@ -140,7 +140,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         />
       </motion.div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title={`${project.title} · 产品详情`} maxWidth="max-w-3xl">
+      <Modal open={open} onClose={() => setOpen(false)} title={`${project.title} · 产品详情`} maxWidth="max-w-5xl">
         <ProjectDetail sections={project.sections} />
       </Modal>
     </>

@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { timeline } from '../data/timeline';
+import Modal from '../components/Modal';
 
 export default function AboutMe() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const [resumeOpen, setResumeOpen] = useState(false);
 
   return (
     <section
@@ -50,7 +52,7 @@ export default function AboutMe() {
             </p>
 
             <button
-              onClick={() => window.open('/assets/resume.pdf', '_blank')}
+              onClick={() => setResumeOpen(true)}
               className="group inline-flex items-center gap-3 px-6 py-3 rounded-full border-2 border-black hover:bg-black hover:text-white transition-colors text-xs font-semibold tracking-[0.2em]"
             >
               VIEW RESUME
@@ -59,6 +61,16 @@ export default function AboutMe() {
                 <path d="M7 7h10v10" />
               </svg>
             </button>
+
+            <Modal open={resumeOpen} onClose={() => setResumeOpen(false)} title="简历 · Resume" maxWidth="max-w-4xl">
+              <div className="h-[75vh]">
+                <iframe
+                  src="/assets/resume.pdf"
+                  className="w-full h-full rounded-xl border border-black/10"
+                  title="Resume PDF"
+                />
+              </div>
+            </Modal>
           </motion.div>
         </div>
 
