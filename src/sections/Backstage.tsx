@@ -140,7 +140,7 @@ export default function Backstage() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-16">
           {/* Left — why product */}
           <div>
             <WhyProduct />
