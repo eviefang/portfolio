@@ -59,7 +59,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
                 </button>
               </div>
             )}
-            <div className="overflow-y-auto px-6 md:px-10 py-8">{children}</div>
+            <div className="overflow-y-auto px-6 md:px-10 py-8" data-lenis-prevent>{children}</div>
           </motion.div>
         </motion.div>
       )}
