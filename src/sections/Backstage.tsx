@@ -18,7 +18,7 @@ function WhyProduct() {
         为什么做产品？
       </h3>
 
-      <div className="space-y-5 text-[15px] text-black/80 leading-[1.85]">
+      <div className="space-y-5 text-[15px] text-black/80 leading-[1.85] max-w-lg">
         <p>AI 让不够专精于代码的人长出了手脚。</p>
         <p>
           我恰好是<span className="font-bold underline decoration-2 underline-offset-4">执行能力与思考能力的混合物</span>——有技术背景，能深入思考产品逻辑，也能快速把想法做成可体验的 demo。
@@ -99,7 +99,7 @@ function HobbyCard({ hobby, index }: { hobby: Hobby; index: number }) {
 
       {hobby.image && (
         <div
-          className="relative mt-4 rounded-xl overflow-y-auto bg-neutral-100 max-h-64"
+          className="relative mt-4 rounded-xl overflow-y-auto bg-neutral-100 max-h-32"
           data-lenis-prevent
         >
           <img
@@ -140,7 +140,7 @@ export default function Backstage() {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left — why product */}
           <div>
             <WhyProduct />
