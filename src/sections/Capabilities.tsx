@@ -170,12 +170,10 @@ export default function Capabilities() {
           <div className="text-[10px] md:text-xs font-semibold tracking-[0.4em] text-black/50 mb-3">
             02 · CAPABILITIES
           </div>
-          <h2 className="font-albert font-black text-5xl md:text-7xl tracking-tighter skew-display leading-none">
-            BUILT&nbsp;WITH
-            <br />
-            AI &amp; HANDS.
+          <h2 className="font-albert font-black text-4xl sm:text-5xl md:text-7xl tracking-tighter skew-display leading-none whitespace-nowrap">
+            BUILT WITH AI &amp; HANDS.
           </h2>
-          <p className="mt-6 text-sm md:text-base text-black/65 max-w-2xl leading-relaxed">
+          <p className="mt-6 text-sm md:text-base text-black/65 leading-relaxed">
             从用户痛点出发，从想清楚到能体验的全过程。每个产品都是一次完整的判断 —— 包括「不该做」也是判断。
           </p>
         </motion.div>
