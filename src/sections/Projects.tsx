@@ -28,8 +28,8 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
           <span
             className="px-3 py-1 rounded-full text-[10px] font-semibold tracking-[0.18em] uppercase"
             style={{
-              backgroundColor: `${article.accent}15`,
-              color: article.accent,
+              backgroundColor: article.accent,
+              color: '#1a1a1a',
             }}
           >
             {article.tag}
@@ -38,8 +38,8 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
 
         <div className="flex items-baseline justify-between gap-6">
           <motion.h3
-            className="font-albert font-black text-2xl md:text-4xl lg:text-5xl tracking-tighter leading-[1.05] flex-1"
-            animate={{ x: hover ? 12 : 0, color: hover ? article.accent : '#000' }}
+            className="font-albert font-black text-2xl md:text-4xl lg:text-5xl tracking-tighter leading-[1.05] flex-1 text-black"
+            animate={{ x: hover ? 12 : 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 22 }}
           >
             {article.title}
@@ -57,7 +57,7 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
           </motion.div>
         </div>
 
-        <p className="mt-3 text-sm md:text-base text-black/60 leading-relaxed max-w-3xl">
+        <p className="mt-3 text-sm md:text-base text-black/60 leading-relaxed whitespace-nowrap">
           {article.excerpt}
         </p>
       </motion.div>

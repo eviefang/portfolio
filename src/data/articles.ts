@@ -20,7 +20,7 @@ export const articles: Article[] = [
     excerpt:
       '从三款 AI 社交产品切入，拆解 AI 在社交场景下的三种路径——情感陪伴、人格代理、关系增强——以及它们各自的产品取舍。',
     content: aiSocial,
-    accent: '#E0221E',
+    accent: '#A8C867',
   },
   {
     id: 'ai-agent',
@@ -29,7 +29,7 @@ export const articles: Article[] = [
     excerpt:
       '当大模型能力快速向前推进，Agent 产品的护城河在哪里？从产品定位、用户认知、商业模式三层拆解 Agent 赛道的真问题。',
     content: aiAgent,
-    accent: '#00A2E8',
+    accent: '#F3CB8B',
   },
   {
     id: 'claude-concepts',
@@ -38,6 +38,6 @@ export const articles: Article[] = [
     excerpt:
       'Claude 的概念体系（context, skill, tool use…）给了我一套新词汇，回头看过去做过的项目，原来很多决策都已经在这套语言里。',
     content: claudeConcepts,
-    accent: '#AA88EE',
+    accent: '#86C5CA',
   },
 ];
