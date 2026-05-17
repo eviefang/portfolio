@@ -104,9 +104,7 @@ function FloatingCard({
           }}
         >
             <div className="w-full h-full rounded-[1.6rem] overflow-hidden relative bg-neutral-100">
-              {photo.kind === 'terminal' ? (
-                <Terminal />
-              ) : photo.img ? (
+              {photo.img ? (
                 <>
                   <img
                     src={photo.img}
@@ -154,14 +152,14 @@ function HeroTitle() {
       </motion.h1>
 
       <motion.div
-        className="absolute z-10 pointer-events-none overflow-hidden rounded-[1.5rem] border-4 border-white shadow-2xl"
+        className="absolute z-10 pointer-events-none overflow-hidden rounded-[1.4rem] shadow-2xl"
         style={{
-          width: '11vw',
-          height: '14vw',
+          width: '13vw',
+          height: '16vw',
           top: '50%',
           left: '50%',
-          marginTop: '-7vw',
-          marginLeft: '-5.5vw',
+          marginTop: '-8vw',
+          marginLeft: '-6.5vw',
         }}
         initial={{ scale: 0, rotate: -12, opacity: 0 }}
         animate={{
@@ -171,11 +169,7 @@ function HeroTitle() {
         }}
         transition={{ type: 'spring', stiffness: 180, damping: 14 }}
       >
-        <img
-          src={travelPhotos[0].img || ''}
-          alt="reveal"
-          className="w-full h-full object-cover"
-        />
+        <Terminal />
       </motion.div>
 
       <motion.h1

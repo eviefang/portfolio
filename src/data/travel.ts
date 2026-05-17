@@ -32,8 +32,8 @@ export const travelPhotos: TravelPhoto[] = [
   { id: 1, img: eze,      caption: 'Èze',      color: '#00A2E8', rotate: -7,  scale: 1.0,  ratio: 0.75 },
   // 2 — front, left-mid
   { id: 2, img: florence, caption: 'Florence', color: '#E0221E', rotate: 6,   scale: 1.0,  ratio: 0.73 },
-  // 3 — front, CENTER (Mac terminal — visual + verbal anchor)
-  { id: 3, img: null, kind: 'terminal', caption: 'Terminal', color: '#28C840', rotate: -3, scale: 1.15, ratio: 0.75 },
+  // 3 — front, CENTER (main visual anchor)
+  { id: 3, img: england,  caption: 'England',  color: '#4ECDC4', rotate: -3,  scale: 1.15, ratio: 0.75 },
   // 4 — front, right-mid
   { id: 4, img: iceland,  caption: 'Iceland',  color: '#0044BA', rotate: -10, scale: 1.05, ratio: 0.75 },
   // 5 — front, far right
