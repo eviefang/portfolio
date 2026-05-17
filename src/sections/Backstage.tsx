@@ -14,8 +14,8 @@ function WhyProduct() {
       <div className="text-[10px] font-semibold tracking-[0.35em] text-black/50 mb-4">
         WHY · PRODUCT
       </div>
-      <h3 className="font-albert font-black text-4xl md:text-5xl tracking-tighter mb-8 skew-display leading-[0.95]">
-        为什么<br />做产品？
+      <h3 className="font-albert font-black text-3xl md:text-4xl tracking-tighter mb-8 skew-display leading-tight whitespace-nowrap">
+        为什么做产品？
       </h3>
 
       <div className="space-y-5 text-[15px] text-black/80 leading-[1.85] max-w-md">
@@ -132,10 +132,8 @@ export default function Backstage() {
           <div className="text-[10px] md:text-xs font-semibold tracking-[0.4em] text-black/50 mb-3">
             04 · OFF DUTY
           </div>
-          <h2 className="font-albert font-black text-5xl md:text-7xl tracking-tighter skew-display leading-none">
-            BEHIND
-            <br />
-            THE WORK.
+          <h2 className="font-albert font-black text-4xl sm:text-5xl md:text-7xl tracking-tighter skew-display leading-none whitespace-nowrap">
+            BEHIND THE WORK.
           </h2>
         </motion.div>
 
@@ -157,8 +155,8 @@ export default function Backstage() {
               <div className="text-[10px] font-semibold tracking-[0.35em] text-black/50 mb-3">
                 MY · WORLD
               </div>
-              <h3 className="font-albert font-black text-3xl md:text-4xl tracking-tighter skew-display leading-tight">
-                工作之外，<br />让我充电的事
+              <h3 className="font-albert font-black text-3xl md:text-4xl tracking-tighter skew-display leading-tight whitespace-nowrap">
+                工作之外，让我充电的事
               </h3>
             </motion.div>
 
