@@ -89,22 +89,17 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mb-14 md:mb-20 flex items-end justify-between gap-6"
+          className="mb-14 md:mb-20"
         >
-          <div>
-            <div className="text-[10px] md:text-xs font-semibold tracking-[0.4em] text-black/50 mb-3">
-              03 · WRITINGS
-            </div>
-            <h2 className="font-albert font-black text-5xl md:text-7xl tracking-tighter skew-display leading-none">
-              PRODUCT
-              <br />
-              NOTES.
-            </h2>
+          <div className="text-[10px] md:text-xs font-semibold tracking-[0.4em] text-black/50 mb-3">
+            03 · WRITINGS
           </div>
-          <div className="hidden md:block text-xs text-black/50 max-w-xs text-right">
-            一些产品观察笔记 —— 关于 AI 社交、Agent 赛道，<br />
-            还有我做过的事情如何在新词汇里被重新读懂。
-          </div>
+          <h2 className="font-albert font-black text-4xl sm:text-5xl md:text-7xl tracking-tighter skew-display leading-none whitespace-nowrap">
+            PRODUCT NOTES.
+          </h2>
+          <p className="mt-6 text-sm md:text-base text-black/65 leading-relaxed">
+            一些产品观察笔记 —— 关于 AI 社交、Agent 赛道，还有我做过的事情如何在新词汇里被重新读懂。
+          </p>
         </motion.div>
 
         <div>

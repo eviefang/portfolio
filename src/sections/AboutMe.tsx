@@ -44,7 +44,7 @@ export default function AboutMe() {
               </span>
             </div>
 
-            <p className="text-base text-black/70 leading-relaxed max-w-md">
+            <p className="text-base text-black/70 leading-relaxed whitespace-nowrap">
               产品 · AI · 设计直觉。<br />
               技术出身但更迷恋用户体验，喜欢把模糊的想法落地成可以体验的东西。
             </p>
