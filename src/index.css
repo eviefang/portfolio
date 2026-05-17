@@ -8,7 +8,7 @@
     -webkit-font-smoothing: antialiased;
   }
   body {
-    font-family: 'Albert Sans', system-ui, sans-serif;
+    font-family: 'Albert Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
     background: #ffffff;
     color: #000000;
     overflow-x: hidden;
@@ -62,7 +62,7 @@
 
 /* Markdown rendered article content */
 .prose-article {
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'EB Garamond', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Georgia, serif;
   font-size: 1.05rem;
   line-height: 1.8;
   color: #1a1a1a;
