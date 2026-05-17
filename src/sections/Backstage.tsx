@@ -1,6 +1,51 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { hobbies, Hobby } from '../data/hobbies';
+
+function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    document.dispatchEvent(new CustomEvent('modal-open'));
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+      document.dispatchEvent(new CustomEvent('modal-close'));
+    };
+  }, [onClose]);
+
+  return createPortal(
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 z-[150] bg-black/90 flex items-center justify-center p-4 md:p-10"
+        onClick={onClose}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 transition-colors flex items-center justify-center text-white"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        <div
+          className="max-h-full overflow-y-auto rounded-2xl"
+          data-lenis-prevent
+          onClick={(e) => e.stopPropagation()}
+        >
+          <img src={src} alt={alt} className="w-auto max-w-[90vw] h-auto block" draggable={false} />
+        </div>
+      </motion.div>
+    </AnimatePresence>,
+    document.body
+  );
+}
 
 function WhyProduct() {
   return (
@@ -46,6 +91,7 @@ function WhyProduct() {
 
 function HobbyCard({ hobby, index }: { hobby: Hobby; index: number }) {
   const [hover, setHover] = useState(false);
+  const [lightbox, setLightbox] = useState(false);
 
   return (
     <motion.div
@@ -98,17 +144,21 @@ function HobbyCard({ hobby, index }: { hobby: Hobby; index: number }) {
       </div>
 
       {hobby.image && (
-        <div
-          className="relative mt-4 rounded-xl overflow-y-auto bg-neutral-100 max-h-32"
-          data-lenis-prevent
-        >
-          <img
-            src={hobby.image}
-            alt={hobby.name}
-            className="w-full h-auto block"
-            draggable={false}
-          />
-        </div>
+        <>
+          <div
+            className="relative mt-4 rounded-xl overflow-y-auto bg-neutral-100 max-h-32 cursor-zoom-in"
+            data-lenis-prevent
+            onClick={() => setLightbox(true)}
+          >
+            <img
+              src={hobby.image}
+              alt={hobby.name}
+              className="w-full h-auto block"
+              draggable={false}
+            />
+          </div>
+          {lightbox && <ImageLightbox src={hobby.image} alt={hobby.name} onClose={() => setLightbox(false)} />}
+        </>
       )}
     </motion.div>
   );
