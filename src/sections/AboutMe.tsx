@@ -34,11 +34,12 @@ export default function AboutMe() {
               01 · ABOUT&nbsp;ME
             </div>
 
-            <h2 className="font-albert font-black text-6xl md:text-7xl lg:text-8xl leading-[0.9] tracking-tighter skew-display">
-              FANG
-              <br />
-              ZHUYI
+            <h2 className="font-albert font-black text-5xl md:text-6xl lg:text-7xl leading-[0.95] tracking-tighter skew-display whitespace-nowrap">
+              FANG ZHUYI
             </h2>
+            <div className="font-albert font-black text-2xl md:text-3xl tracking-tight text-black/80">
+              方竹伊
+            </div>
 
             <div className="flex items-center gap-3 pt-3">
               <span className="w-1 h-4 bg-black" />
