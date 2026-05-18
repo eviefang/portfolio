@@ -37,11 +37,11 @@ export const travelPhotos: TravelPhoto[] = [
   // 4 — front, right-mid
   { id: 4, img: iceland,  caption: 'Iceland',  color: '#0044BA', rotate: -10, scale: 1.05, ratio: 0.75 },
   // 5 — front, far right
-  { id: 5, img: menton,   caption: 'Menton',   color: '#FF7F27', rotate: 12,  scale: 1.0,  ratio: 0.56 },
+  { id: 5, img: vienna,   caption: 'Vienna',   color: '#F59E0B', rotate: 12,  scale: 1.0,  ratio: 0.75 },
   // 6 — back, far left
   { id: 6, img: paris,    caption: 'Paris',    color: '#AA88EE', rotate: 14,  scale: 0.95, ratio: 0.75 },
   // 7 — back, center
   { id: 7, img: tuscany,  caption: 'Tuscany',  color: '#55C16A', rotate: -14, scale: 0.95, ratio: 0.75 },
   // 8 — back, far right
-  { id: 8, img: vienna,   caption: 'Vienna',   color: '#F59E0B', rotate: 5,   scale: 0.9,  ratio: 0.75 },
+  { id: 8, img: menton,   caption: 'Menton',   color: '#FF7F27', rotate: 5,   scale: 0.9,  ratio: 0.56 },
 ];
