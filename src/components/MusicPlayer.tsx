@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 // 把音频文件丢进 public/assets/music/ 后，按需扩充这个数组。
 // title 显示在 hover 出来的标签上，url 可以是相对路径或 CDN 链接。
 const ORIGINAL_PLAYLIST: { title: string; url: string }[] = [
-  // { title: 'Come Here', url: '/assets/music/come-here.mp3' },
+  { title: 'Ylang Ylang — FKJ & ((( O )))', url: '/assets/music/ylang-ylang.mp3' },
 ];
 
 export default function MusicPlayer() {
