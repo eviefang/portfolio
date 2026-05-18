@@ -11,13 +11,6 @@ interface ModalProps {
   accent?: string;
 }
 
-function hexToRgba(hex: string, alpha: number) {
-  const h = hex.replace('#', '');
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
 
 export default function Modal({ open, onClose, title, children, maxWidth = 'max-w-5xl', accent }: ModalProps) {
   useEffect(() => {
@@ -33,10 +26,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
     };
   }, [open, onClose]);
 
-  const tint = accent ? hexToRgba(accent, 0.09) : null;
-  const cardStyle = tint
-    ? { background: `linear-gradient(${tint}, ${tint}), #ffffff` }
-    : { background: '#ffffff' };
+  const cardStyle = { background: '#ffffff' };
 
   return createPortal(
     <AnimatePresence>

@@ -8,7 +8,7 @@ function ProjectDetail({ sections, accent }: { sections: ProjectSection[]; accen
     <div className="space-y-8">
       {sections.map((s, i) => (
         <div key={i}>
-          <div className="text-[10px] font-bold tracking-[0.3em] text-black/50 uppercase mb-3">
+          <div className="text-xs font-bold tracking-[0.25em] text-black/55 uppercase mb-3">
             {s.label}
           </div>
           {s.text && (

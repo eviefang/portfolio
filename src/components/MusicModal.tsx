@@ -30,7 +30,7 @@ export default function MusicModal({ onConfirm, onDecline }: Props) {
           Music?
         </h3>
         <p className="text-center text-white/75 text-[14px] leading-relaxed mb-7">
-          Would you like to turn on the background music for a better experience?
+          这是一个个人网站，听点音乐再逛会更有意思。<br />当然，安静地看也完全没问题。
         </p>
         <div className="flex gap-3 justify-center">
           <button
