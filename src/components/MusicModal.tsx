@@ -13,7 +13,7 @@ export default function MusicModal({ onConfirm, onDecline }: Props) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-[180] bg-black/30 backdrop-blur-sm flex items-center justify-center px-6"
+      className="fixed inset-0 z-[180] flex items-center justify-center px-6"
     >
       <motion.div
         initial={{ scale: 0.92, y: 20 }}

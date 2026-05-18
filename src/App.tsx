@@ -11,14 +11,15 @@ import Projects from './sections/Projects';
 import Backstage from './sections/Backstage';
 import Contact from './sections/Contact';
 
-// Replace this with your own track when ready.
-// Drop an mp3 in /public/ (or /assets/) and update the path.
+// Drop an mp3 in /public/assets/ and update path + title.
 const MUSIC_URL: string | null = null;
+const MUSIC_TITLE = 'Come Here';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [showMusicModal, setShowMusicModal] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
+  const [muted, setMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -36,8 +37,10 @@ export default function App() {
       a.volume = 0.4;
       audioRef.current = a;
     }
+    audioRef.current.muted = false;
     audioRef.current.play().catch(() => {});
     setMusicOn(true);
+    setMuted(false);
   };
 
   const stopMusic = () => {
@@ -56,6 +59,18 @@ export default function App() {
     else playMusic();
   };
 
+  const toggleMute = () => {
+    if (!audioRef.current) return;
+    const next = !muted;
+    audioRef.current.muted = next;
+    setMuted(next);
+  };
+
+  const skipTrack = () => {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = 0;
+  };
+
   return (
     <div className="relative min-h-screen bg-white text-black">
       <AnimatePresence mode="wait">
@@ -71,7 +86,14 @@ export default function App() {
       {!loading && (
         <>
           <SmoothScroll />
-          <Navbar musicEnabled={musicOn} onToggleMusic={toggleMusic} />
+          <Navbar
+            musicEnabled={musicOn}
+            muted={muted}
+            musicTitle={MUSIC_TITLE}
+            onToggleMusic={toggleMusic}
+            onToggleMute={toggleMute}
+            onSkip={skipTrack}
+          />
           <main>
             <Hero />
             <AboutMe />
