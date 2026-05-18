@@ -31,7 +31,7 @@ export const projects: Project[] = [
     stack: 'HTML / CSS / JS · Vercel Serverless · 智谱 GLM-4-Flash',
     liveUrl: 'https://lyricsync-theta.vercel.app',
     liveLabel: '在线体验',
-    accent: '#FF7F27',
+    accent: '#C4956A',
     sections: [
       {
         label: '背景',
@@ -104,7 +104,7 @@ export const projects: Project[] = [
     status: 'stopped',
     liveUrl: 'https://think-log-liard.vercel.app',
     liveLabel: '原型体验',
-    accent: '#00A2E8',
+    accent: '#88A8BE',
     sections: [
       {
         label: '产品定义',
