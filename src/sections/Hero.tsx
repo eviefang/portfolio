@@ -97,10 +97,10 @@ function FloatingCard({
         <div
           className="w-full h-full rounded-[2rem] p-2 relative transition-shadow duration-300"
           style={{
-            background: 'rgba(255,255,255,0.18)',
-            backdropFilter: 'blur(2px)',
-            WebkitBackdropFilter: 'blur(2px)',
-            border: `1px solid rgba(255,255,255,0.55)`,
+            background: 'rgba(255,255,255,0.08)',
+            backdropFilter: 'blur(6px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(6px) saturate(140%)',
+            border: `1px solid rgba(255,255,255,0.3)`,
             boxShadow: hover
               ? '0 35px 70px -15px rgba(0,0,0,0.35)'
               : '0 25px 50px -12px rgba(0,0,0,0.18)',

@@ -51,11 +51,12 @@ export default function Navbar({ musicEnabled, muted, musicTitle, onToggleMusic,
             className="w-full h-full rounded-full"
             style={{
               background:
-                'radial-gradient(circle at center, #C4956A 0% 16%, #111 16% 28%, #222 28% 42%, #111 42% 56%, #222 56% 100%)',
+                'radial-gradient(circle at center, #C4956A 0% 18%, #050505 18% 100%)',
+              boxShadow: '0 2px 10px -2px rgba(0,0,0,0.3)',
             }}
           >
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-white/80" />
+              <div className="w-1.5 h-1.5 rounded-full bg-white/90" />
             </div>
           </motion.div>
         </button>
@@ -74,9 +75,9 @@ export default function Navbar({ musicEnabled, muted, musicTitle, onToggleMusic,
               <button
                 onClick={onSkip}
                 aria-label="Skip"
-                className="w-7 h-7 rounded-full border border-black/20 bg-white/60 hover:bg-black hover:text-white hover:border-black transition-colors flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_-2px_rgba(0,0,0,0.15)] hover:shadow-[0_3px_10px_-2px_rgba(0,0,0,0.25)] transition-shadow flex items-center justify-center text-black"
               >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M6 18L14.5 12 6 6v12zM16 6v12h2V6h-2z"/>
                 </svg>
               </button>
@@ -90,16 +91,16 @@ export default function Navbar({ musicEnabled, muted, musicTitle, onToggleMusic,
               <button
                 onClick={onToggleMute}
                 aria-label={muted ? 'Unmute' : 'Mute'}
-                className="w-7 h-7 rounded-full border border-black/20 bg-white/60 hover:bg-black hover:text-white hover:border-black transition-colors flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-white shadow-[0_2px_8px_-2px_rgba(0,0,0,0.15)] hover:shadow-[0_3px_10px_-2px_rgba(0,0,0,0.25)] transition-shadow flex items-center justify-center text-black"
               >
                 {muted ? (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                     <path d="M11 5L6 9H2v6h4l5 4V5z"/>
                     <line x1="23" y1="9" x2="17" y2="15"/>
                     <line x1="17" y1="9" x2="23" y2="15"/>
                   </svg>
                 ) : (
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                     <path d="M11 5L6 9H2v6h4l5 4V5z"/>
                     <path d="M19.07 4.93a10 10 0 010 14.14"/>
                     <path d="M15.54 8.46a5 5 0 010 7.07"/>
