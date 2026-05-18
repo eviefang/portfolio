@@ -111,6 +111,7 @@ function FloatingCard({
                     src={photo.img}
                     alt={photo.caption}
                     className="w-full h-full object-cover"
+                    decoding="async"
                     draggable={false}
                   />
                   <div className="absolute bottom-3 left-3 text-[10px] font-semibold tracking-[0.2em] text-white drop-shadow uppercase">
@@ -234,7 +235,7 @@ export default function Hero() {
           >
             {/* Title block */}
             <div
-              className="absolute top-[24%] left-0 w-full text-center pointer-events-none"
+              className="absolute top-[18%] left-0 w-full text-center pointer-events-none"
               style={{ transform: 'translateZ(20px) rotateX(-8deg)' }}
             >
               <motion.div
