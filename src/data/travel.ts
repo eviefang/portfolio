@@ -1,7 +1,6 @@
 export interface TravelPhoto {
   id: number;
   img: string | null;
-  kind?: 'photo' | 'terminal';
   caption: string;
   color: string;
   rotate: number;
