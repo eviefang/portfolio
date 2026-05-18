@@ -1,4 +1,4 @@
-import miquan from '../../assets/miquan.jpeg';
+const miquan = '/assets/miquan.jpeg';
 
 export interface Hobby {
   emoji: string;
