@@ -29,7 +29,7 @@ const LAYOUT = [
   // 7 — back, center (pulled lower)
   { left: '43%', top: '92%', z: 16 },
   // 8 — back, far right (pokes out further right)
-  { left: '82%', top: '82%', z: 14 },
+  { left: '82%', top: '96%', z: 14 },
 ];
 
 const CARD_W = 'w-[180px] md:w-[240px] lg:w-[280px]';
@@ -252,11 +252,11 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1.2, ease: 'easeOut', delay: 0.5 }}
               >
-                <div className="font-albert font-light text-base md:text-xl text-neutral-500 tracking-[0.3em] uppercase">
+                <div className="font-albert font-light text-xl md:text-2xl text-neutral-500 tracking-[0.3em] uppercase">
                   Building AI
                 </div>
                 <div className="w-10 h-px bg-neutral-300" />
-                <div className="font-albert font-light text-sm md:text-lg text-neutral-400 tracking-[0.3em] uppercase">
+                <div className="font-albert font-light text-lg md:text-xl text-neutral-400 tracking-[0.3em] uppercase">
                   That People Actually Use
                 </div>
               </motion.div>
