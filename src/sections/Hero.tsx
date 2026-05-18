@@ -27,7 +27,7 @@ const LAYOUT = [
   // 6 — back, far left (tucked into slot 1 from below)
   { left: '0%',  top: '76%', z: 14 },
   // 7 — back, center (pulled lower)
-  { left: '43%', top: '92%', z: 16 },
+  { left: '43%', top: '89%', z: 16 },
   // 8 — back, far right (pokes out further right)
   { left: '82%', top: '88%', z: 14 },
 ];
