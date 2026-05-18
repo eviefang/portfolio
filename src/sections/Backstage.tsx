@@ -154,6 +154,8 @@ function HobbyCard({ hobby, index }: { hobby: Hobby; index: number }) {
               src={hobby.image}
               alt={hobby.name}
               className="w-full h-auto block"
+              loading="lazy"
+              decoding="async"
               draggable={false}
             />
           </div>

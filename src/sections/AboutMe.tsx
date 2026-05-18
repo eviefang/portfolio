@@ -22,7 +22,7 @@ export default function AboutMe() {
 
       <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
         {/* Left — name plate */}
-        <div className="flex flex-col justify-end lg:sticky lg:top-32 lg:self-start">
+        <div className="flex flex-col justify-end lg:sticky lg:top-32 lg:self-start min-w-0">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ export default function AboutMe() {
               01 · ABOUT&nbsp;ME
             </div>
 
-            <h2 className="font-albert font-black text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tighter skew-display whitespace-nowrap">
+            <h2 className="font-albert font-black text-6xl md:text-7xl lg:text-7xl xl:text-8xl leading-[0.95] tracking-tighter skew-display">
               FANG ZHUYI
             </h2>
             <div className="font-albert font-black text-3xl md:text-4xl tracking-tight text-black/80">
@@ -48,7 +48,7 @@ export default function AboutMe() {
               </span>
             </div>
 
-            <p className="text-base text-black/70 leading-relaxed whitespace-nowrap">
+            <p className="text-base text-black/70 leading-relaxed">
               产品 · AI · 设计直觉。<br />
               技术出身但更迷恋用户体验，喜欢把模糊的想法落地成可以体验的东西。
             </p>
