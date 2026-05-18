@@ -29,7 +29,7 @@ export default function MusicModal({ onConfirm, onDecline }: Props) {
         <h3 className="font-albert font-black text-3xl text-white text-center tracking-tight mb-4">
           Music?
         </h3>
-        <p className="text-center text-white/80 text-[14px] leading-relaxed mb-7">
+        <p className="text-center text-white/80 text-[13px] leading-relaxed mb-7">
           这是一个个人网站，听点音乐再逛会更有意思。<br />当然，安静地看也完全没问题。
         </p>
         <div className="flex gap-3 justify-center">
