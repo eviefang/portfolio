@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-family: 'Albert Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+    background: #ffffff;
+    color: #000000;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: #000;
+    color: #fff;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #fff;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
+}
+
+@layer utilities {
+  .skew-display {
+    transform: skewX(-6deg);
+  }
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .text-stroke {
+    -webkit-text-stroke: 2px #000;
+    color: transparent;
+  }
+}
+
+/* Ghost background type — large faded display text used behind sections */
+.ghost-type {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.04);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Markdown rendered article content */
+.prose-article {
+  font-family: 'EB Garamond', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #1a1a1a;
+}
+.prose-article h2 {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  margin: 2rem 0 0.75rem;
+  letter-spacing: -0.01em;
+}
+.prose-article h3 {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.5rem;
+}
+.prose-article p { margin: 0.8rem 0; }
+.prose-article ul, .prose-article ol { margin: 0.8rem 0; padding-left: 1.5rem; }
+.prose-article ul { list-style: disc; }
+.prose-article ol { list-style: decimal; }
+.prose-article li { margin: 0.3rem 0; padding-left: 0.25rem; }
+.prose-article li::marker { color: #000; }
+.prose-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+  font-family: 'Albert Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+.prose-article thead {
+  background: #f4f4f4;
+}
+.prose-article th, .prose-article td {
+  border: 1px solid #e5e5e5;
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-article th {
+  font-weight: 700;
+  color: #000;
+}
+.prose-article tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+.prose-article blockquote {
+  border-left: 3px solid #000;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  background: #fafafa;
+}
+.prose-article code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #f4f4f4;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+.prose-article a {
+  color: #000;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+/* Blinking cursor for the hero terminal */
+@keyframes terminal-cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.terminal-cursor {
+  animation: terminal-cursor-blink 1s steps(1) infinite;
+}
