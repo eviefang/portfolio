@@ -29,7 +29,7 @@ const LAYOUT = [
   // 7 — back, center (pulled lower)
   { left: '43%', top: '92%', z: 16 },
   // 8 — back, far right (pokes out further right)
-  { left: '82%', top: '96%', z: 14 },
+  { left: '82%', top: '88%', z: 14 },
 ];
 
 const CARD_W = 'w-[180px] md:w-[240px] lg:w-[280px]';
