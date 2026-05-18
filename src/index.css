@@ -82,7 +82,33 @@
 }
 .prose-article p { margin: 0.8rem 0; }
 .prose-article ul, .prose-article ol { margin: 0.8rem 0; padding-left: 1.5rem; }
-.prose-article li { margin: 0.3rem 0; }
+.prose-article ul { list-style: disc; }
+.prose-article ol { list-style: decimal; }
+.prose-article li { margin: 0.3rem 0; padding-left: 0.25rem; }
+.prose-article li::marker { color: #000; }
+.prose-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+  font-family: 'Albert Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+.prose-article thead {
+  background: #f4f4f4;
+}
+.prose-article th, .prose-article td {
+  border: 1px solid #e5e5e5;
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-article th {
+  font-weight: 700;
+  color: #000;
+}
+.prose-article tbody tr:nth-child(even) {
+  background: #fafafa;
+}
 .prose-article blockquote {
   border-left: 3px solid #000;
   padding: 0.5rem 1rem;
