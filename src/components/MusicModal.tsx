@@ -20,7 +20,7 @@ export default function MusicModal({ onConfirm, onDecline }: Props) {
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.95, y: 10 }}
         transition={{ type: 'spring', stiffness: 180, damping: 22 }}
-        className="rounded-3xl px-9 py-8 max-w-sm w-full backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)]"
+        className="rounded-3xl px-10 py-10 md:px-12 md:py-11 max-w-sm w-full backdrop-blur-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)]"
         style={{
           background:
             'linear-gradient(135deg, rgba(60,60,70,0.78), rgba(20,20,28,0.85))',
