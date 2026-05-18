@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { projects, Project, ProjectSection } from '../data/projects';
 import Modal from '../components/Modal';
 
-function ProjectDetail({ sections }: { sections: ProjectSection[] }) {
+function ProjectDetail({ sections, accent }: { sections: ProjectSection[]; accent: string }) {
   return (
     <div className="space-y-8">
       {sections.map((s, i) => (
@@ -15,14 +15,21 @@ function ProjectDetail({ sections }: { sections: ProjectSection[] }) {
             <p className="text-[15px] leading-relaxed text-black/85 mb-3">{s.text}</p>
           )}
           {s.highlight && (
-            <div className="bg-black text-white rounded-2xl px-5 py-4 text-[15px] leading-relaxed font-medium">
+            <div
+              className="rounded-2xl px-5 py-4 text-[15px] leading-relaxed font-medium text-white"
+              style={{ backgroundColor: accent }}
+            >
               {s.highlight}
             </div>
           )}
           {s.items && (
             <div className="space-y-3">
               {s.items.map((it, j) => (
-                <div key={j} className="border-l-2 border-black pl-4 py-1">
+                <div
+                  key={j}
+                  className="border-l-2 pl-4 py-1"
+                  style={{ borderColor: accent }}
+                >
                   <div className="font-albert font-bold text-[15px] mb-1">{it.title}</div>
                   <p className="text-sm text-black/70 leading-relaxed">{it.desc}</p>
                 </div>
@@ -33,7 +40,7 @@ function ProjectDetail({ sections }: { sections: ProjectSection[] }) {
             <ul className="space-y-2">
               {s.list.map((li, j) => (
                 <li key={j} className="text-sm text-black/75 leading-relaxed flex gap-3">
-                  <span className="text-black font-bold">·</span>
+                  <span className="font-bold" style={{ color: accent }}>·</span>
                   <span>{li}</span>
                 </li>
               ))}
@@ -140,8 +147,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         />
       </motion.div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title={`${project.title} · 产品详情`} maxWidth="max-w-5xl">
-        <ProjectDetail sections={project.sections} />
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title={`${project.title} · 产品详情`}
+        maxWidth="max-w-5xl"
+        accent={project.accent}
+      >
+        <ProjectDetail sections={project.sections} accent={project.accent} />
       </Modal>
     </>
   );

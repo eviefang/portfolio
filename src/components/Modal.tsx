@@ -8,9 +8,18 @@ interface ModalProps {
   title?: string;
   children: ReactNode;
   maxWidth?: string;
+  accent?: string;
 }
 
-export default function Modal({ open, onClose, title, children, maxWidth = 'max-w-5xl' }: ModalProps) {
+function hexToRgba(hex: string, alpha: number) {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export default function Modal({ open, onClose, title, children, maxWidth = 'max-w-5xl', accent }: ModalProps) {
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
@@ -24,6 +33,11 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
     };
   }, [open, onClose]);
 
+  const tint = accent ? hexToRgba(accent, 0.09) : null;
+  const cardStyle = tint
+    ? { background: `linear-gradient(${tint}, ${tint}), #ffffff` }
+    : { background: '#ffffff' };
+
   return createPortal(
     <AnimatePresence>
       {open && (
@@ -32,7 +46,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-sm flex items-center justify-center px-4 md:px-8 pt-20 md:pt-24 pb-4 md:pb-8"
+          className="fixed inset-0 z-[150] bg-black/55 backdrop-blur-sm flex items-center justify-center px-4 md:px-8 pt-20 md:pt-24 pb-4 md:pb-8"
           onClick={onClose}
         >
           <motion.div
@@ -41,17 +55,18 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
             exit={{ scale: 0.96, y: 10, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
-            className={`relative bg-white rounded-3xl border-2 border-black w-full ${maxWidth} max-h-full overflow-hidden flex flex-col shadow-[0_30px_60px_-15px_rgba(0,0,0,0.4)]`}
+            style={cardStyle}
+            className={`relative rounded-3xl w-full ${maxWidth} max-h-full overflow-hidden flex flex-col shadow-[0_30px_60px_-15px_rgba(0,0,0,0.35)]`}
           >
             {title && (
-              <div className="flex items-center justify-between px-6 md:px-8 py-5 border-b-2 border-black/10">
+              <div className="flex items-center justify-between px-6 md:px-8 py-5 border-b border-black/10">
                 <h3 className="font-albert font-black text-xl md:text-2xl tracking-tight">
                   {title}
                 </h3>
                 <button
                   onClick={onClose}
                   aria-label="Close"
-                  className="w-9 h-9 rounded-full border border-black/20 hover:bg-black hover:text-white transition-colors flex items-center justify-center"
+                  className="w-9 h-9 rounded-full border border-black/15 hover:bg-black hover:text-white transition-colors flex items-center justify-center"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="18" y1="6" x2="6" y2="18" />

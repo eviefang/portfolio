@@ -62,7 +62,7 @@ function ArticleRow({ article, index }: { article: Article; index: number }) {
         </p>
       </motion.div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title={article.title} maxWidth="max-w-5xl">
+      <Modal open={open} onClose={() => setOpen(false)} title={article.title} maxWidth="max-w-5xl" accent={article.accent}>
         <article className="prose-article">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{article.content}</ReactMarkdown>
         </article>
