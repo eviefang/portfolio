@@ -70,7 +70,7 @@ function WhyProduct() {
         </p>
 
         <div className="bg-black text-white rounded-2xl px-5 py-4 text-[15px] leading-relaxed font-medium">
-          这个网站，就是我和 AI 一起从零搭建的。
+          这个网站，就是我和 AI 一起协作做出来的。
         </div>
 
         <p className="pt-2">
